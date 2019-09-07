@@ -1,4 +1,5 @@
 ﻿<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,26 +45,15 @@
                     </form>
                 </div>
                 <div id="node_container">
+                    <c:forEach  items="${nodes}" var ="node">
                     <div id="node">
-                        <h4>nodename</h4>
-                        <p>node text describing the main problem that is necessary to solve</p>
-                        <p align="right"><i>dd:MM:yyyy</i></p>
+                        <h4>${node.header}</h4>
+                        <p>${node.content}</p>
+                        <p align="right">
+                            <i>${node.modified.format( DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
+                        </p>
                     </div>
-                    <div id="node">
-                        <h4>nodename</h4>
-                        <p>node text describing the main problem that is necessary to solve</p>
-                        <p align="right"><i>dd:MM:yyyy</i></p>
-                    </div>
-                    <div id="node">
-                        <h4>nodename</h4>
-                        <p>node text describing the main problem that is necessary to solve</p>
-                        <p align="right"><i>dd:MM:yyyy</i></p>
-                    </div>
-                    <div id="node">
-                        <h4>nodename</h4>
-                        <p>node text describing the main problem that is necessary to solve</p>
-                        <p align="right"><i>dd:MM:yyyy</i></p>
-                    </div>
+                    </c:forEach>
                 </div>
             </div>
             <div id="center">

@@ -3,8 +3,6 @@ html {min-height:100%}
 a {color:#963}
 a:hover {color:#C60}
 body {background:#CCD8E0 url(img/bg.jpg) repeat-x left bottom;color:#444;font:normal 62.5% Tahoma,sans-serif}
-p,code,ul {padding-bottom:1.2em}
-li {list-style:none}
 h1 {font:normal 1.8em Tahoma,sans-serif;margin-bottom:4px}
 h1,h2,h3 {padding-top:6px}
 /* misc */
@@ -23,21 +21,17 @@ h1,h2,h3 {padding-top:6px}
 .header .right p,.header .right h2 {padding:0 16px}
 .header .right h2 {padding-top:16px;font:normal 1.6em "Trebuchet MS",sans-serif}
 /* navigation */
-.navigation {background:#D9E1E5 url(img/nav.gif);border-color:#DFEEF7 #CFDEE7;height:41px}
+.navigation {background:#D9E1E5 url(img/nav.gif);
+    border-color:#DFEEF7 #CFDEE7;height:41px}
 .navigation a {background:#D9E1E5 url(img/nav.gif);border-right:1px solid #AFBEC7;color:#456;display:block;float:left;font:bold 1.1em sans-serif;line-height:41px;padding:0 20px;text-decoration:none}
 .navigation a:hover {background-position:left bottom;color:#234}
 /* main */
 .main {border-top:4px solid #FFF}
 /* mine */
-textarea { 
-    resize: vertical;
-    width: 650px;
-    height: 350px;
-    overflow: visible;
-}
 #left {
     float:left;
-    width:100px;
+    width:180px;
+    border: 1px solid blue;
 }
 #center {
     margin:0 auto;
@@ -46,5 +40,34 @@ textarea {
 }
 #right {
     float:right;
-    width:100px;
+    width:180px;
+}
+
+#editor {
+    resize: none;
+    width: 650px;
+    height: 500px;
+    overflow: visible;
+}
+#node_text {
+    resize: none;
+    overflow: visible;
+    height: 50px;
+}
+#node {
+    margin: 5px;
+    padding:10px;
+    background-color:dodgerblue;
+}
+#node_container {
+    overflow: auto;
+    height: 315px;
+}
+
+.node_form ul {
+    list-style-type:none;
+}
+.node_form li{
+    padding:10px;
+    position:relative;
 }

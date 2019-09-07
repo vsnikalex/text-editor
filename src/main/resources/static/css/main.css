@@ -1,0 +1,50 @@
+html {min-height:100%}
+* {margin:0;padding:0}
+a {color:#963}
+a:hover {color:#C60}
+body {background:#CCD8E0 url(img/bg.jpg) repeat-x left bottom;color:#444;font:normal 62.5% Tahoma,sans-serif}
+p,code,ul {padding-bottom:1.2em}
+li {list-style:none}
+h1 {font:normal 1.8em Tahoma,sans-serif;margin-bottom:4px}
+h1,h2,h3 {padding-top:6px}
+/* misc */
+.clearer {clear:both}
+.left {float:left}
+.right {float:right}
+/* structure */
+.container {background:#FFF;font-size:1.2em;margin:0 auto;padding:0 10px 10px;width:1100px}
+/* header */
+.top {background:url(img/clouds.gif) repeat-x;padding:50px 10px 0}
+/* title */
+.header {background:#FFF;font-size:1.2em;height:150px;margin:0 auto;padding:10px 10px 5px;width:1100px}
+.header .left, .header .right {background:#A4A4A0;color:#FFF;height:150px}
+.header .left {background:#B3C2C7;font:normal 2.8em "Trebuchet MS",sans-serif;line-height:150px;text-align:center;width:1100px}
+.header .right {overflow:auto;width:212px}
+.header .right p,.header .right h2 {padding:0 16px}
+.header .right h2 {padding-top:16px;font:normal 1.6em "Trebuchet MS",sans-serif}
+/* navigation */
+.navigation {background:#D9E1E5 url(img/nav.gif);border-color:#DFEEF7 #CFDEE7;height:41px}
+.navigation a {background:#D9E1E5 url(img/nav.gif);border-right:1px solid #AFBEC7;color:#456;display:block;float:left;font:bold 1.1em sans-serif;line-height:41px;padding:0 20px;text-decoration:none}
+.navigation a:hover {background-position:left bottom;color:#234}
+/* main */
+.main {border-top:4px solid #FFF}
+/* mine */
+textarea { 
+    resize: vertical;
+    width: 650px;
+    height: 350px;
+    overflow: visible;
+}
+#left {
+    float:left;
+    width:100px;
+}
+#center {
+    margin:0 auto;
+    width:800px;
+    text-align: center;
+}
+#right {
+    float:right;
+    width:100px;
+}

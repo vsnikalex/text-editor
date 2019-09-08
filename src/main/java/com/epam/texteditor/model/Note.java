@@ -10,10 +10,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
 @Entity
-@Table(name = "nodes")
+@Table(name = "notes")
 @NoArgsConstructor
 @Data
-public class Node {
+public class Note {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,7 +28,7 @@ public class Node {
     @Column(name = "modified")
     private LocalDateTime modified;
 
-    public Node(String header, String content) {
+    public Note(String header, String content) {
         update(header, content);
     }
 

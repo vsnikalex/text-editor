@@ -5,6 +5,9 @@ import com.epam.texteditor.service.NoteService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -16,26 +19,17 @@ public class MainController {
         this.noteService = noteService;
     }
 
-    @GetMapping({"/", "/index"})
-    public String index(Model model) {
-        // Mocked Nodes
-        try {
-            noteService.saveNote(new Note("Node1", "first node text describing the main problem that is necessary to solve"));
-            Thread.sleep(10);
-            noteService.saveNote(new Note("Node2", "second node text describing the main problem that is necessary to solve"));
-            Thread.sleep(10);
-            noteService.saveNote(new Note("Node3", "third node text describing the main problem that is necessary to solve"));
-            Thread.sleep(10);
-            noteService.saveNote(new Note("Node4", "fourth node text describing the main problem that is necessary to solve"));
-        } catch (InterruptedException e) {
-            System.out.println("Interrupted");
-        }
+    @GetMapping("/")
+    public String indexGet(Model model) {
+        model.addAttribute("nodes", noteService.getAllNotes());
 
-        String pageTitle = "EPAM Text Editor";
-        String appName = "Text Editor Home Page";
+        return "index";
+    }
 
-        model.addAttribute("appName", appName);
-        model.addAttribute("pageTitle", pageTitle);
+    @PostMapping("/")
+    public String indexPost(Model model, HttpServletRequest request) {
+        noteService.saveNote(new Note(request.getParameter("node_name"), request.getParameter("node_text")));
+
         model.addAttribute("nodes", noteService.getAllNotes());
 
         return "index";

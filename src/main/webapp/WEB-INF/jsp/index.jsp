@@ -2,16 +2,17 @@
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <head>
     <meta charset="UTF-8" />
-    <title>${pageTitle}</title>
+    <title>EPAM Text Editor</title>
     <link href="<c:url value="/css/main.css" />" rel="stylesheet">
 </head>
 <body>
 <div class="top">
 	<div class="header">
 		<div class="left">
-            ${appName}
+            Text Editor Home Page
 		</div>		
 	</div>	
 </div>
@@ -26,8 +27,9 @@
                 FILE NAVIGATION
             </div>
             <div id="right">
+
                 <div>
-                    <form class="node_form" action="/page.html" method="POST">
+                    <form class="node_form" action="/" method="POST">
                         <ul>
                             <li>
                                 <label> Node name:
@@ -44,6 +46,7 @@
                         </ul>
                     </form>
                 </div>
+
                 <div id="node_container">
                     <c:forEach  items="${nodes}" var ="node">
                     <div id="node">
@@ -56,6 +59,7 @@
                     </c:forEach>
                 </div>
             </div>
+
             <div id="center">
                 <textarea id="editor">
 Lorem ipsum dolor sit amet adipiscing bibendum sem orci tempus aliquet gravida, orci amet iaculis aptent blandit quam accumsan donec in facilisis, cursus ante curabitur aliquet condimentum tincidunt facilisis non cubilia lorem et pretium aliquam phasellus ipsum metus quisque auctor tristique donec nibh, praesent congue ultricies aenean ornare ligula sagittis proin sed vestibulum purus tempus aenean neque aliquam curae vivamus purus egestas ligula tincidunt nullam.

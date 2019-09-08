@@ -1,13 +1,11 @@
 package com.epam.texteditor.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
+
 
 @Entity
 @Table(name = "notes")

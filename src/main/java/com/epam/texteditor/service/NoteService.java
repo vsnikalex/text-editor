@@ -8,6 +8,8 @@ public interface NoteService {
 
     List<Note> getAllNotes();
 
+    List<Note> getNotesByFilename(String filepath);
+
     void saveNote(Note node);
 
 }

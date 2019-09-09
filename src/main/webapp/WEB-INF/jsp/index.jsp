@@ -29,28 +29,28 @@
                     <form class="node_form" action="/" method="POST">
                         <ul>
                             <li>
-                                <label> Node name:
-                                    <input size="18" type="text" name="node_name"/>
+                                <label> Note name:
+                                    <input size="18" type="text" name="note_name"/>
                                 </label>
                             </li>
                             <li>
-                                <label for="node_text">Node text:</label>
-                                <textarea id="node_text" name="node_text" ></textarea>
+                                <label for="note_text">Note text:</label>
+                                <textarea id="note_text" name="note_text" ></textarea>
                             </li>
                             <li>
-                                <button style="height:25px;width:160px" class="submit" type="submit">Save node</button>
+                                <button style="height:25px;width:160px" class="submit" type="submit">Save note</button>
                             </li>
                         </ul>
                     </form>
                 </div>
 
                 <div id="node_container">
-                    <c:forEach  items="${nodes}" var ="node">
+                    <c:forEach  items="${notes}" var ="note">
                     <div id="node">
-                        <h4>${node.header}</h4>
-                        <p>${node.content}</p>
+                        <h4>${note.header}</h4>
+                        <p>${note.content}</p>
                         <p align="right">
-                            <i>${node.modified.format( DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
+                            <i>${note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
                         </p>
                     </div>
                     </c:forEach>

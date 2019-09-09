@@ -11,4 +11,6 @@ public interface NoteRepository extends CrudRepository<Note, Long> {
 
     List<Note> findAllByOrderByModifiedDesc();
 
+    List<Note> findAllByFilepathOrderByModifiedDesc(String filepath);
+
 }

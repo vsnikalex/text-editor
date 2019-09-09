@@ -25,4 +25,8 @@ public class NoteServiceImpl implements NoteService {
         noteRepository.save(note);
     }
 
+    @Override
+    public List<Note> getNotesByFilename(String filepath) {
+        return noteRepository.findAllByFilepathOrderByModifiedDesc(filepath);
+    }
 }

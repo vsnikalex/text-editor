@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.File;
 import java.time.LocalDateTime;
 
 
@@ -26,14 +27,14 @@ public class Note {
     @Column(name = "modified")
     private LocalDateTime modified;
 
-    public Note(String header, String content) {
-        update(header, content);
-    }
+    @Column(name = "filepath")
+    private String filepath;
 
-    private void update(String header, String content) {
+    public Note(String header, String content, String filepath) {
         this.header = header;
         this.content = content;
         this.modified = LocalDateTime.now();
+        this.filepath = filepath;
     }
 
 }

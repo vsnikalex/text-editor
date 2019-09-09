@@ -16,22 +16,23 @@ public class MainController {
 
     private final NoteService noteService;
 
-    // Default file
-    private String curFile = "/readme.txt";
+    // Synchronizes GET file and POST note requests
+    private String curFile;
 
     public MainController(NoteService noteService) {
         this.noteService = noteService;
 
         // Default file's notes
-        noteService.saveNote(new Note("Note1", "Note1 text", curFile));
-        noteService.saveNote(new Note("Note2", "Note2 text", curFile));
-        noteService.saveNote(new Note("Note3", "Note3 text", curFile));
+        noteService.saveNote(new Note("Note1", "Note1 text", "/readme.txt"));
+        noteService.saveNote(new Note("Note2", "Note2 text", "/readme.txt"));
+        noteService.saveNote(new Note("Note3", "Note3 text", "/readme.txt"));
     }
 
     @GetMapping("/")
     public String indexGet(Model model, @RequestParam(value="file_name", required=false) String fileName) {
 
-        curFile = fileName;
+        // Default file if it's not specified
+        curFile = (fileName == null) ? "/readme.txt" : fileName;
 
         model.addAttribute("fileName", curFile);
         model.addAttribute("notes", noteService.getNotesByFilename(curFile));

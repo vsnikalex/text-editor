@@ -29,13 +29,12 @@
                     <form class="node_form" action="/" method="POST">
                         <ul>
                             <li>
-                                <label> Note name:
-                                    <input size="18" type="text" name="note_name"/>
-                                </label>
+                                <label for="node_name">Note name:</label>
+                                <input size="18" type="text" id = "node_name" name="note_name"/>
                             </li>
                             <li>
-                                <label for="note_text">Note text:</label>
-                                <textarea id="note_text" name="note_text" ></textarea>
+                                <label for="node_text">Note text:</label>
+                                <textarea id="node_text" name="note_text" ></textarea>
                             </li>
                             <li>
                                 <button style="height:25px;width:160px" class="submit" type="submit">Save note</button>

@@ -10,7 +10,7 @@ h1,h2,h3 {padding-top:6px}
 .left {float:left}
 .right {float:right}
 /* structure */
-.container {background:#FFF;font-size:1.2em;margin:0 auto;padding:0 10px 10px;width:1100px}
+.container {background:#FFF;font-size:1.2em;margin:0 auto;padding:0 10px 10px;width:1100px;height: 550px}
 /* header */
 .top {background:url(img/clouds.gif) repeat-x;padding:50px 10px 0}
 /* title */
@@ -49,25 +49,25 @@ h1,h2,h3 {padding-top:6px}
     height: 500px;
     overflow: visible;
 }
-#node_text {
+#note_text {
     resize: none;
     overflow: visible;
     height: 50px;
 }
-#node {
+#note {
     margin: 5px;
     padding:10px;
     background-color:dodgerblue;
 }
-#node_container {
+#note_container {
     overflow: auto;
-    height: 315px;
+    height: 355px;
 }
 
-.node_form ul {
+.note_form ul {
     list-style-type:none;
 }
-.node_form li{
+.note_form li{
     padding:10px;
     position:relative;
 }

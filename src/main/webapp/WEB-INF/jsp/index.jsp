@@ -10,11 +10,11 @@
 </head>
 <body>
 <div class="top">
-	<div class="header">
-		<div class="left">
+    <div class="header">
+        <div class="left">
             Text Editor Home Page
-		</div>		
-	</div>	
+        </div>
+    </div>
 </div>
 <div class="container">
 
@@ -26,15 +26,15 @@
             <div id="right">
 
                 <div>
-                    <form class="node_form" action="/" method="POST">
+                    <form class="note_form" action="/" method="POST">
                         <ul>
                             <li>
-                                <label for="node_name">Note name:</label>
-                                <input size="18" type="text" id = "node_name" name="note_name"/>
+                                <label for="note_name">Note name:</label>
+                                <input size="18" type="text" id = "note_name" name="note_name"/>
                             </li>
                             <li>
-                                <label for="node_text">Note text:</label>
-                                <textarea id="node_text" name="note_text" ></textarea>
+                                <label for="note_text">Note text:</label>
+                                <textarea id="note_text" name="note_text" ></textarea>
                             </li>
                             <li>
                                 <button style="height:25px;width:160px" class="submit" type="submit">Save note</button>
@@ -43,15 +43,15 @@
                     </form>
                 </div>
 
-                <div id="node_container">
+                <div id="note_container">
                     <c:forEach  items="${notes}" var ="note">
-                    <div id="node">
-                        <h4>${note.header}</h4>
-                        <p>${note.content}</p>
-                        <p align="right">
-                            <i>${note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
-                        </p>
-                    </div>
+                        <div id="note">
+                            <h4>${note.header}</h4>
+                            <p>${note.content}</p>
+                            <p align="right">
+                                <i>${note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
+                            </p>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
@@ -61,11 +61,11 @@
                 <div class="navigation">
                     <form action="/" method="GET">
                         <input name="file_name"/>
-                        <button style="height:25px;width:160px;margin:8px" class="submit" type="submit">Open File</button>
+                        <button style="height:25px;width:80px;margin:8px" class="submit" type="submit">Open File</button>
+                        <button style="height:25px;width:80px;margin:8px" class="submit" type="submit">Save</button>
+                        <textarea id="editor">${fileName}</textarea>
                     </form>
                 </div>
-
-                <textarea id="editor">${fileName}</textarea>
 
             </div>
         </div>

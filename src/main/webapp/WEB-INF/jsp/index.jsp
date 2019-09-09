@@ -63,7 +63,7 @@
                         <input name="file_name"/>
                         <button style="height:25px;width:80px;margin:8px" class="submit" type="submit">Open File</button>
                         <button style="height:25px;width:80px;margin:8px" class="submit" type="submit">Save</button>
-                        <textarea id="editor">${fileName}</textarea>
+                        <textarea id="editor">${text}</textarea>
                     </form>
                 </div>
 

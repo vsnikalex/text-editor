@@ -8,4 +8,8 @@
                 <property name="suffix" value=".jsp"/>
     </bean>
 
+    <bean id="root" class="java.io.File" >
+        <constructor-arg value="c:/EPAM/"/>
+    </bean>
+
 </beans>

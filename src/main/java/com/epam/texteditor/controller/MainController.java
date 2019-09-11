@@ -73,6 +73,8 @@ public class MainController {
         curFile = (fileName == null) ? "readme.txt" : fileName;
 
         switch (action == null ? "open" : action) {
+            case "new_file":
+                text = "";
             case "save":
                 updateFile(text);
             case "open":

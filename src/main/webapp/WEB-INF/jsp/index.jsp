@@ -63,6 +63,7 @@
                         <input name="file_name" value="readme.txt"/>
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="open">Open</button>
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="save">Save</button>
+                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">New file</button>
                         <textarea id="editor" name="text">${text}</textarea>
                     </form>
                 </div>

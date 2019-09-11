@@ -60,10 +60,10 @@
 
                 <div class="navigation">
                     <form action="/" method="GET">
-                        <input name="file_name"/>
+                        <input name="file_name" value="readme.txt"/>
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="open">Open</button>
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="save">Save</button>
-                        <textarea id="editor">${text}</textarea>
+                        <textarea id="editor" name="text">${text}</textarea>
                     </form>
                 </div>
 

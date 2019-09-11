@@ -61,8 +61,8 @@
                 <div class="navigation">
                     <form action="/" method="GET">
                         <input name="file_name"/>
-                        <button style="height:25px;width:80px;margin:8px" class="submit" type="submit">Open File</button>
-                        <button style="height:25px;width:80px;margin:8px" class="submit" type="submit">Save</button>
+                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="open">Open</button>
+                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="save">Save</button>
                         <textarea id="editor">${text}</textarea>
                     </form>
                 </div>

@@ -2,7 +2,6 @@
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <head>
     <meta charset="UTF-8" />
     <title>EPAM Text Editor</title>
@@ -60,9 +59,10 @@
 
                 <div class="navigation">
                     <form action="/" method="GET">
-                        <input name="file_name" value="readme.txt"/>
+                        <input name="file_name" id="file_name" />
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="open">Open</button>
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="save">Save</button>
+                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="delete">Delete</button>
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">New file</button>
                         <textarea id="editor" name="text">${text}</textarea>
                     </form>

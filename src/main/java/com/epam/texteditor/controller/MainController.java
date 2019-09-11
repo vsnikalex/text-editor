@@ -69,7 +69,7 @@ public class MainController {
     public String indexGet(Model model, @RequestParam(value="file_name", required=false) String fileName,
                                             @RequestParam(value="action", required = false) String action,
                                                 @RequestParam(value="text", required = false) String text) {
-        // Default file if it's not specified
+        // Set current file to readme.txt if not specified
         curFile = (fileName == null) ? "readme.txt" : fileName;
 
         switch (action == null ? "open" : action) {
@@ -78,6 +78,12 @@ public class MainController {
             case "save":
                 updateFile(text);
             case "open":
+                setDocAndNotes(model);
+                break;
+            case "delete":
+                File file = FileUtils.getFile(root, curFile);
+                FileUtils.deleteQuietly(file);
+                curFile = "readme.txt";
                 setDocAndNotes(model);
                 break;
         }

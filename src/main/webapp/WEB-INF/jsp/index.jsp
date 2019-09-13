@@ -46,7 +46,7 @@
                             <li class="file">
                                 <div>
 								<span>
-									<a href="/open_file">${file.name}</a>
+									<a href="/?file_name=${file.name}">${file.name}</a>
 								</span>
                                 </div>
                             </li>
@@ -100,8 +100,7 @@
             <div id="center">
                 <div class="navigation">
                     <form action="/" method="GET">
-                        <input name="file_name" id="file_name" />
-                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="open">Open</button>
+                        <input name="file_name" id="file_name" value="${curFile}" />
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="save">Save</button>
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="delete">Delete</button>
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">New file</button>

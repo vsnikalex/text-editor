@@ -29,7 +29,7 @@
                         <li class="dir">
                             <div>
 								<span>
-									<a href="/back">..</a>
+									<a href="/?back=1">..</a>
 								</span>
                             </div>
                         </li>
@@ -37,7 +37,7 @@
                             <li class="dir">
                                 <div>
 								<span>
-									<a href="/?dir_name=${dir.name}">${dir.name}</a>
+									<a href="/?dir_name=${dir.name}&file_name=${curFile}">${dir.name}</a>
 								</span>
                                 </div>
                             </li>

@@ -23,13 +23,15 @@ public class MainController {
     private final NoteService noteService;
 
     // Synchronizes GET file and POST note requests
+    private File root;
     private File curDir;
     private String curFile;
 
     public MainController(ConfigurableApplicationContext context, NoteService noteService) {
         this.context = context;
         this.noteService = noteService;
-        curDir = (File) context.getBean("root");
+        root = (File) context.getBean("root");
+        curDir = root;
     }
 
     private void setDocAndNotes(Model model) {
@@ -72,8 +74,9 @@ public class MainController {
     @GetMapping("/")
     public String indexGet(Model model, @RequestParam(value="file_name", required=false) String fileName,
                                             @RequestParam(value="action", required = false) String action,
-                                                @RequestParam(value="text", required = false) String text,
-                                                    @RequestParam(value="dir_name", required = false) String dirName) {
+                                            @RequestParam(value="text", required = false) String text,
+                                            @RequestParam(value="dir_name", required = false) String dirName,
+                                            @RequestParam(value="back", required = false) String back) {
 
         // Create | Save | Open | Delete file
         curFile = (fileName == null) ? "" : fileName;
@@ -88,13 +91,21 @@ public class MainController {
             case "delete":
                 File file = FileUtils.getFile(curDir, curFile);
                 FileUtils.deleteQuietly(file);
-                curFile = "readme.txt";
+                curFile = "";
                 setDocAndNotes(model);
                 break;
         }
 
-        // Open directory
-        if (dirName != null) { curDir = new File(curDir.getAbsolutePath(), dirName); }
+        // Change directory
+        if (dirName != null) {
+            curDir = new File(curDir.getAbsolutePath(), dirName);
+        } else if (back != null) {
+            // Don't move higher than root
+            File moveBack = new File(curDir.getParent());
+            if (!moveBack.equals(root.getParentFile())) {
+                curDir = moveBack;
+            }
+        }
         setDirsAndFiles(model);
 
         return "index";

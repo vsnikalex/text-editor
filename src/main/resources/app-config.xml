@@ -9,7 +9,7 @@
     </bean>
 
     <bean id="root" class="java.io.File" >
-        <constructor-arg value="c:/EPAM/"/>
+        <constructor-arg value="C:\EPAM"/>
     </bean>
 
 </beans>

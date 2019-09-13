@@ -3,7 +3,6 @@ package com.epam.texteditor.controller;
 import com.epam.texteditor.model.Note;
 import com.epam.texteditor.service.NoteService;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.StandardOpenOption;
 
 
 @Controller
@@ -26,17 +24,17 @@ public class MainController {
 
     // Synchronizes GET file and POST note requests
     private String curFile;
-    private final File root;
+    private final File curDir;
 
     public MainController(ConfigurableApplicationContext context, NoteService noteService) {
         this.context = context;
         this.noteService = noteService;
-        root = (File) context.getBean("root");
+        curDir = (File) context.getBean("root");
     }
 
     private void setDocAndNotes(Model model) {
         // Set text
-        File newTempFile = FileUtils.getFile(root, curFile);
+        File newTempFile = FileUtils.getFile(curDir, curFile);
         try {
             String text = FileUtils.readFileToString(newTempFile, Charset.defaultCharset());
             model.addAttribute("text", text);
@@ -53,7 +51,7 @@ public class MainController {
     }
 
     private void updateFile(String changes) {
-        File file = FileUtils.getFile(root, curFile);
+        File file = FileUtils.getFile(curDir, curFile);
 
         try {
             FileUtils.writeStringToFile(file, changes, Charset.defaultCharset());
@@ -63,6 +61,14 @@ public class MainController {
             System.out.println("IO EXCEPTION");
         }
 
+    }
+
+    private void setDirsAndFiles(Model model) {
+        File[] dirs = curDir.listFiles(File::isDirectory);
+        File[] files = curDir.listFiles(File::isFile);
+
+        model.addAttribute("dirs", dirs);
+        model.addAttribute("files", files);
     }
 
     @GetMapping("/")
@@ -81,12 +87,14 @@ public class MainController {
                 setDocAndNotes(model);
                 break;
             case "delete":
-                File file = FileUtils.getFile(root, curFile);
+                File file = FileUtils.getFile(curDir, curFile);
                 FileUtils.deleteQuietly(file);
                 curFile = "readme.txt";
                 setDocAndNotes(model);
                 break;
         }
+
+        setDirsAndFiles(model);
 
         return "index";
     }
@@ -98,6 +106,7 @@ public class MainController {
         noteService.saveNote(new Note(noteName, noteText, curFile));
 
         setDocAndNotes(model);
+        setDirsAndFiles(model);
 
         return "index";
     }

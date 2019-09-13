@@ -33,20 +33,24 @@
 								</span>
                             </div>
                         </li>
-                        <li class="dir">
-                            <div>
+                        <c:forEach  items="${dirs}" var ="dir">
+                            <li class="dir">
+                                <div>
 								<span>
-									<a href="/open_dir">dir1</a>
+									<a href="/open_dir">${dir.name}</a>
 								</span>
-                            </div>
-                        </li>
-                        <li class="file">
-                            <div>
+                                </div>
+                            </li>
+                        </c:forEach>
+                        <c:forEach  items="${files}" var ="file">
+                            <li class="file">
+                                <div>
 								<span>
-									<a href="/open_file">file1</a>
+									<a href="/open_file">${file.name}</a>
 								</span>
-                            </div>
-                        </li>
+                                </div>
+                            </li>
+                        </c:forEach>
                     </ul>
                 </div>
                 <div class="note_container">

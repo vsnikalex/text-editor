@@ -72,10 +72,11 @@ public class MainController {
     @GetMapping("/")
     public String indexGet(Model model, @RequestParam(value="file_name", required=false) String fileName,
                                             @RequestParam(value="action", required = false) String action,
-                                                @RequestParam(value="text", required = false) String text) {
-        // Set current file to readme.txt if not specified
-        curFile = (fileName == null) ? "" : fileName;
+                                                @RequestParam(value="text", required = false) String text,
+                                                    @RequestParam(value="dir_name", required = false) String dirName) {
 
+        // Create | Save | Open | Delete file
+        curFile = (fileName == null) ? "" : fileName;
         switch (action == null ? "open" : action) {
             case "new_file":
                 text = "";
@@ -92,6 +93,8 @@ public class MainController {
                 break;
         }
 
+        // Open directory
+        if (dirName != null) { curDir = new File(curDir.getAbsolutePath(), dirName); }
         setDirsAndFiles(model);
 
         return "index";

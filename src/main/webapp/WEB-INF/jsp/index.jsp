@@ -37,7 +37,7 @@
                             <li class="dir">
                                 <div>
 								<span>
-									<a href="/open_dir">${dir.name}</a>
+									<a href="/?dir_name=${dir.name}">${dir.name}</a>
 								</span>
                                 </div>
                             </li>

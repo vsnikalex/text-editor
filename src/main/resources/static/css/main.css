@@ -27,11 +27,10 @@ h1,h2,h3 {padding-top:6px}
 .navigation a:hover {background-position:left bottom;color:#234}
 /* main */
 .main {border-top:4px solid #FFF}
-/* mine */
+/* main blocks */
 #left {
     float:left;
     width:180px;
-    border: 1px solid blue;
 }
 #center {
     margin:0 auto;
@@ -42,32 +41,54 @@ h1,h2,h3 {padding-top:6px}
     float:right;
     width:180px;
 }
-
+/* center block: file editor */
 #editor {
     resize: none;
     width: 650px;
     height: 500px;
     overflow: visible;
 }
-#note_text {
-    resize: none;
-    overflow: visible;
-    height: 50px;
-}
-#note {
-    margin: 5px;
-    padding:10px;
-    background-color:dodgerblue;
-}
-#note_container {
-    overflow: auto;
-    height: 355px;
-}
-
+/* right block: file/text note creation, file notes */
 .note_form ul {
     list-style-type:none;
 }
 .note_form li{
     padding:10px;
     position:relative;
+}
+#note_text {
+    resize: none;
+    overflow: visible;
+    height: 50px;
+}
+#text_note {
+    margin: 5px;
+    padding:10px;
+    background-color:skyblue;
+}
+/* common for side blocks */
+.note_container {
+    overflow: auto;
+    height: 355px;
+}
+/* left block: file browser, dir notes */
+#file_navigation {
+    height: 166px;
+    margin: 10px;
+    overflow: auto;
+}
+.dir {
+    list-style: none;
+    background: url(img/dir.png) 0 3px no-repeat;
+    padding: 0 15px 15px;
+}
+.file {
+    list-style: none;
+    background: url(img/file.png) 0 3px no-repeat;
+    padding: 0 15px 15px;
+}
+#file_note {
+    margin: 5px;
+    padding:10px;
+    background-color:lightgreen;
 }

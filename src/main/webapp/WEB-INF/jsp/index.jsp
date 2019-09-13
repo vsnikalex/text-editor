@@ -15,15 +15,54 @@
         </div>
     </div>
 </div>
+
+
+
 <div class="container">
 
     <div class="main">
         <div id="container">
-            <div id="left">
-                FILE NAVIGATION
-            </div>
-            <div id="right">
 
+            <div id="left">
+                <div id="file_navigation">
+                    <ul>
+                        <li class="dir">
+                            <div>
+								<span>
+									<a href="/back">..</a>
+								</span>
+                            </div>
+                        </li>
+                        <li class="dir">
+                            <div>
+								<span>
+									<a href="/open_dir">dir1</a>
+								</span>
+                            </div>
+                        </li>
+                        <li class="file">
+                            <div>
+								<span>
+									<a href="/open_file">file1</a>
+								</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="note_container">
+                    <c:forEach  items="${notes}" var ="note">
+                        <div id="file_note">
+                            <h4>${note.header}</h4>
+                            <p>${note.content}</p>
+                            <p align="right">
+                                <i>${note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
+                            </p>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+
+            <div id="right">
                 <div>
                     <form class="note_form" action="/" method="POST">
                         <ul>
@@ -41,10 +80,9 @@
                         </ul>
                     </form>
                 </div>
-
-                <div id="note_container">
+                <div class="note_container">
                     <c:forEach  items="${notes}" var ="note">
-                        <div id="note">
+                        <div id="text_note">
                             <h4>${note.header}</h4>
                             <p>${note.content}</p>
                             <p align="right">
@@ -56,7 +94,6 @@
             </div>
 
             <div id="center">
-
                 <div class="navigation">
                     <form action="/" method="GET">
                         <input name="file_name" id="file_name" />
@@ -67,10 +104,14 @@
                         <textarea id="editor" name="text">${text}</textarea>
                     </form>
                 </div>
-
             </div>
+
         </div>
     </div>
+
 </div>
+
+
+
 </body>
 </html>

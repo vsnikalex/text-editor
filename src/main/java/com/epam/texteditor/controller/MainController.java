@@ -23,8 +23,8 @@ public class MainController {
     private final NoteService noteService;
 
     // Synchronizes GET file and POST note requests
+    private File curDir;
     private String curFile;
-    private final File curDir;
 
     public MainController(ConfigurableApplicationContext context, NoteService noteService) {
         this.context = context;
@@ -38,10 +38,8 @@ public class MainController {
         try {
             String text = FileUtils.readFileToString(newTempFile, Charset.defaultCharset());
             model.addAttribute("text", text);
-        } catch (FileNotFoundException e) {
-            model.addAttribute("text", "File not found!");
         } catch (IOException e) {
-            model.addAttribute("text", "IOException occurred!");
+            model.addAttribute("text", "");
         }
 
         // Set doc name
@@ -76,7 +74,7 @@ public class MainController {
                                             @RequestParam(value="action", required = false) String action,
                                                 @RequestParam(value="text", required = false) String text) {
         // Set current file to readme.txt if not specified
-        curFile = (fileName == null) ? "readme.txt" : fileName;
+        curFile = (fileName == null) ? "" : fileName;
 
         switch (action == null ? "open" : action) {
             case "new_file":

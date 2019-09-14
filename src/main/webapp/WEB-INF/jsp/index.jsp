@@ -53,9 +53,17 @@
                         </c:forEach>
                     </ul>
                 </div>
+
+                <div>
+                    <form action="/" method="GET">
+                        <input name="dir_name" />
+                        <button style="height:20px;width:165px;margin:3px" type="submit" name="action" value="new_dir">New directory</button>
+                    </form>
+                </div>
+
                 <div class="note_container">
                     <c:forEach  items="${notes}" var ="note">
-                        <div id="file_note">
+                        <div id="dir_note">
                             <h4>${note.header}</h4>
                             <p>${note.content}</p>
                             <p align="right">
@@ -118,7 +126,10 @@
                         <textarea id="editor" name="text">${text}</textarea>
                     </form>
 
+                    <h3>${curFile}</h3>
+
                 </div>
+
             </div>
 
         </div>

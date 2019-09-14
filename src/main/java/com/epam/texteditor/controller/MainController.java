@@ -49,7 +49,7 @@ public class MainController {
         }
 
         // Set document name
-        model.addAttribute("curFile", curFile.getName());
+        model.addAttribute("curFile", curFile.getAbsolutePath());
         // Set notes
         model.addAttribute("notes", noteService.getNotesByFile(curFile));
     }
@@ -94,9 +94,14 @@ public class MainController {
                 break;
         }
 
-        // Change directory
+        // Open | Create directory
         if (dirName != null) {
-            curDir = new File(curDir.getAbsolutePath(), dirName);
+            File dir = new File(curDir.getAbsolutePath(), dirName);
+            if (dir.exists()) {
+                curDir = dir;
+            } else {
+                dir.mkdir();
+            }
         } else if (back != null) {
             // Don't move higher than root
             File moveBack = new File(curDir.getParent());

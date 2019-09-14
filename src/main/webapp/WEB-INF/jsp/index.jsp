@@ -99,13 +99,25 @@
 
             <div id="center">
                 <div class="navigation">
+
+                    <div id="new_file">
+                        <form action="/" method="GET">
+                            <input name="file_name" id="file_name" />
+                            <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">New file</button>
+                        </form>
+                    </div>
+
+                    <div id="delete">
+                        <form action="/" method="GET">
+                            <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="delete">Delete</button>
+                        </form>
+                    </div>
+
                     <form action="/" method="GET">
-                        <input name="file_name" id="file_name" value="${curFile}" />
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="save">Save</button>
-                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="delete">Delete</button>
-                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">New file</button>
                         <textarea id="editor" name="text">${text}</textarea>
                     </form>
+
                 </div>
             </div>
 

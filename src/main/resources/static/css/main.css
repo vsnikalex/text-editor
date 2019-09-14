@@ -10,7 +10,7 @@ h1,h2,h3 {padding-top:6px}
 .left {float:left}
 .right {float:right}
 /* structure */
-.container {background:#FFF;font-size:1.2em;margin:0 auto;padding:0 10px 10px;width:1100px;height: 550px}
+.container {background:#FFF;font-size:1.2em;margin:0 auto;padding:0 10px 10px;width:1100px;height: 582px}
 /* header */
 .top {background:url(img/clouds.gif) repeat-x;padding:50px 10px 0}
 /* title */
@@ -47,6 +47,13 @@ h1,h2,h3 {padding-top:6px}
     width: 650px;
     height: 500px;
     overflow: visible;
+}
+#new_file {
+    float:left;
+    padding-left: 10px;
+}
+#delete {
+    float:right;
 }
 /* right block: file/text note creation, file notes */
 .note_form ul {

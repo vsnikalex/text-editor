@@ -2,6 +2,7 @@ package com.epam.texteditor.controller;
 
 import com.epam.texteditor.model.Note;
 import com.epam.texteditor.service.NoteService;
+import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -19,51 +20,49 @@ import java.nio.charset.Charset;
 @Controller
 public class MainController {
 
-    private final ConfigurableApplicationContext context;
     private final NoteService noteService;
 
-    // Synchronizes GET file and POST note requests
+    // curDir: file browser, directory notes
+    // curFile: file editor, file notes
     private File root;
     private File curDir;
-    private String curFile;
+    private File curFile;
 
     public MainController(ConfigurableApplicationContext context, NoteService noteService) {
-        this.context = context;
-        this.noteService = noteService;
         root = (File) context.getBean("root");
         curDir = root;
+        curFile = curDir;
+        this.noteService = noteService;
     }
 
+    @SneakyThrows(IOException.class)
     private void setDocAndNotes(Model model) {
-        // Set text
-        File newTempFile = FileUtils.getFile(curDir, curFile);
-        try {
-            String text = FileUtils.readFileToString(newTempFile, Charset.defaultCharset());
-            model.addAttribute("text", text);
-        } catch (IOException e) {
+        // Scope: file editor, file notes
+
+        // True after opening the app (curFile is root directory by default)
+        // True after deleting file (curFile will be set to curDir)
+        if (curFile.isDirectory()) {
             model.addAttribute("text", "");
+        } else {
+            String text = FileUtils.readFileToString(curFile, Charset.defaultCharset());
+            model.addAttribute("text", text);
         }
 
-        // Set doc name
-        model.addAttribute("curFile", curFile);
+        // Set document name
+        model.addAttribute("curFile", curFile.getName());
         // Set notes
-        model.addAttribute("notes", noteService.getNotesByFilename(curFile));
+        model.addAttribute("notes", noteService.getNotesByFile(curFile));
     }
 
+    @SneakyThrows(IOException.class)
     private void updateFile(String changes) {
-        File file = FileUtils.getFile(curDir, curFile);
 
-        try {
-            FileUtils.writeStringToFile(file, changes, Charset.defaultCharset());
-        } catch (FileNotFoundException e) {
-            System.out.println("FILE NOT FOUND");
-        } catch (IOException e) {
-            System.out.println("IO EXCEPTION");
-        }
+        FileUtils.writeStringToFile(curFile, changes, Charset.defaultCharset());
 
     }
 
     private void setDirsAndFiles(Model model) {
+        // Scope: file browser, directory notes
         File[] dirs = curDir.listFiles(File::isDirectory);
         File[] files = curDir.listFiles(File::isFile);
 
@@ -79,7 +78,7 @@ public class MainController {
                                             @RequestParam(value="back", required = false) String back) {
 
         // Create | Save | Open | Delete file
-        curFile = (fileName == null) ? "" : fileName;
+        if (fileName != null) { curFile = new File(curDir, fileName); }
         switch (action == null ? "open" : action) {
             case "new_file":
                 text = "";
@@ -89,9 +88,8 @@ public class MainController {
                 setDocAndNotes(model);
                 break;
             case "delete":
-                File file = FileUtils.getFile(curDir, curFile);
-                FileUtils.deleteQuietly(file);
-                curFile = "";
+                FileUtils.deleteQuietly(curFile);
+                curFile = curDir;
                 setDocAndNotes(model);
                 break;
         }

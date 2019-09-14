@@ -27,14 +27,14 @@ public class Note {
     @Column(name = "modified")
     private LocalDateTime modified;
 
-    @Column(name = "filepath")
-    private String filepath;
+    @Column(name = "file")
+    private File file;
 
-    public Note(String header, String content, String filepath) {
+    public Note(String header, String content, File file) {
         this.header = header;
         this.content = content;
         this.modified = LocalDateTime.now();
-        this.filepath = filepath;
+        this.file = file;
     }
 
 }

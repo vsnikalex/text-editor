@@ -2,14 +2,13 @@ package com.epam.texteditor.service;
 
 import com.epam.texteditor.model.Note;
 
+import java.io.File;
 import java.util.List;
 
 public interface NoteService {
 
-    List<Note> getAllNotes();
+    void saveNote(Note note);
 
-    List<Note> getNotesByFilename(String filepath);
-
-    void saveNote(Note node);
+    List<Note> getNotesByFile(File file);
 
 }

@@ -50,8 +50,8 @@ public class MainController {
 
         // Set document name
         model.addAttribute("curFile", curFile.getAbsolutePath());
-        // Set notes
-        model.addAttribute("notes", noteService.getNotesByFile(curFile));
+        // Set text notes
+        model.addAttribute("textNotes", noteService.getNotesByFile(curFile));
     }
 
     @SneakyThrows(IOException.class)
@@ -68,6 +68,9 @@ public class MainController {
 
         model.addAttribute("dirs", dirs);
         model.addAttribute("files", files);
+
+        // Set directory notes
+        model.addAttribute("dirNotes", noteService.getNotesByFile(curDir));
     }
 
     @GetMapping("/")
@@ -116,9 +119,17 @@ public class MainController {
 
     @PostMapping("/")
     public String indexPost(Model model, @RequestParam(value="note_name") String noteName,
-                                                @RequestParam(value="note_text") String noteText) {
+                                            @RequestParam(value="note_text") String noteText,
+                                            @RequestParam(value="note_type") String noteType) {
 
-        noteService.saveNote(new Note(noteName, noteText, curFile));
+        switch (noteType) {
+            case "text_note":
+                noteService.saveNote(new Note(noteName, noteText, curFile));
+                break;
+            case "dir_note":
+                noteService.saveNote(new Note(noteName, noteText, curDir));
+                break;
+        }
 
         setDocAndNotes(model);
         setDirsAndFiles(model);

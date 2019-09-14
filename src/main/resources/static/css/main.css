@@ -60,7 +60,7 @@ h1,h2,h3 {padding-top:6px}
     list-style-type:none;
 }
 .note_form li{
-    padding:10px;
+    padding:5px;
     position:relative;
 }
 #note_text {

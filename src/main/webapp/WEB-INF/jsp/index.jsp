@@ -62,12 +62,12 @@
                 </div>
 
                 <div class="note_container">
-                    <c:forEach  items="${notes}" var ="note">
+                    <c:forEach  items="${dirNotes}" var ="dir_note">
                         <div id="dir_note">
-                            <h4>${note.header}</h4>
-                            <p>${note.content}</p>
+                            <h4>${dir_note.header}</h4>
+                            <p>${dir_note.content}</p>
                             <p align="right">
-                                <i>${note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
+                                <i>${dir_note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
                             </p>
                         </div>
                     </c:forEach>
@@ -77,6 +77,14 @@
             <div id="right">
                 <div>
                     <form class="note_form" action="/" method="POST">
+                        <ul>
+                            <li>
+                                <input type="radio" name="note_type" value="text_note" checked> Text note
+                            </li>
+                            <li>
+                                <input type="radio" name="note_type" value="dir_note"> Directory note
+                            </li>
+                        </ul>
                         <ul>
                             <li>
                                 <label for="note_name">Note name:</label>
@@ -93,12 +101,12 @@
                     </form>
                 </div>
                 <div class="note_container">
-                    <c:forEach  items="${notes}" var ="note">
+                    <c:forEach  items="${textNotes}" var ="text_note">
                         <div id="text_note">
-                            <h4>${note.header}</h4>
-                            <p>${note.content}</p>
+                            <h4>${text_note.header}</h4>
+                            <p>${text_note.content}</p>
                             <p align="right">
-                                <i>${note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
+                                <i>${text_note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
                             </p>
                         </div>
                     </c:forEach>

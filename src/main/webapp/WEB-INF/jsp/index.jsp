@@ -59,6 +59,9 @@
                         <input name="dir_name" />
                         <button style="height:20px;width:165px;margin:3px" type="submit" name="action" value="new_dir">New directory</button>
                     </form>
+                    <form action="/" method="GET">
+                        <button style="height:20px;width:165px;margin:3px" type="submit" name="action" value="rm_dir">Delete directory</button>
+                    </form>
                 </div>
 
                 <div class="note_container">
@@ -125,7 +128,7 @@
 
                     <div id="delete">
                         <form action="/" method="GET">
-                            <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="delete">Delete</button>
+                            <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="delete">Delete doc</button>
                         </form>
                     </div>
 

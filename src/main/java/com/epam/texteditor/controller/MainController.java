@@ -80,7 +80,8 @@ public class MainController {
                                             @RequestParam(value="dir_name", required = false) String dirName,
                                             @RequestParam(value="back", required = false) String back) {
 
-        // Create | Save | Open | Delete file
+        // Create | Save | Open | Delete file, Delete directory
+        // When opening the first time action will be null: default "open" is used
         if (fileName != null) { curFile = new File(curDir, fileName); }
         switch (action == null ? "open" : action) {
             case "new_file":
@@ -88,12 +89,17 @@ public class MainController {
             case "save":
                 updateFile(text);
             case "open":
-                setDocAndNotes(model);
+                // App start action can be added here
                 break;
             case "delete":
                 FileUtils.deleteQuietly(curFile);
                 curFile = curDir;
-                setDocAndNotes(model);
+                break;
+            case "rm_dir":
+                if (!curDir.equals(root)) {
+                    FileUtils.deleteQuietly(curDir);
+                    curDir = curDir.getParentFile();
+                }
                 break;
         }
 
@@ -112,6 +118,8 @@ public class MainController {
                 curDir = moveBack;
             }
         }
+
+        setDocAndNotes(model);
         setDirsAndFiles(model);
 
         return "index";

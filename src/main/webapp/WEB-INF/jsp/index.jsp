@@ -6,6 +6,7 @@
     <meta charset="UTF-8" />
     <title>EPAM Text Editor</title>
     <link href="<c:url value="/css/main.css" />" rel="stylesheet">
+
 </head>
 <body>
 <div class="top">
@@ -15,7 +16,6 @@
         </div>
     </div>
 </div>
-
 
 
 <div class="container">
@@ -57,6 +57,10 @@
                 <div>
                     <form action="/" method="GET">
                         <input name="dir_name" />
+                        <p><select multiple name="dir_access" style="height:20px;width:165px;margin:3px">
+                            <option selected value="read_write">read and write</option>
+                            <option value="read_only">read only</option>
+                        </select></p>
                         <button style="height:20px;width:165px;margin:3px" type="submit" name="action" value="new_dir">New directory</button>
                     </form>
                     <form action="/" method="GET">
@@ -119,13 +123,6 @@
             <div id="center">
                 <div class="navigation">
 
-                    <div id="new_file">
-                        <form action="/" method="GET">
-                            <input name="file_name" id="file_name" />
-                            <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">New file</button>
-                        </form>
-                    </div>
-
                     <div id="delete">
                         <form action="/" method="GET">
                             <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="delete">Delete doc</button>
@@ -133,6 +130,12 @@
                     </div>
 
                     <form action="/" method="GET">
+                        <input name="file_name" id="file_name" />
+                        <select multiple name="file_access" size="1" style="width:120px">
+                            <option selected value="read_write">read and write</option>
+                            <option value="read_only">read only</option>
+                        </select>
+                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">New file</button>
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="save">Save</button>
                         <textarea id="editor" name="text">${text}</textarea>
                     </form>
@@ -147,7 +150,6 @@
     </div>
 
 </div>
-
 
 
 </body>

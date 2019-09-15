@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -56,9 +55,10 @@ public class MainController {
 
     @SneakyThrows(IOException.class)
     private void updateFile(String changes) {
-
-        FileUtils.writeStringToFile(curFile, changes, Charset.defaultCharset());
-
+        // If file is writable or new
+        if (curFile.canWrite() || !curFile.exists()) {
+            FileUtils.writeStringToFile(curFile, changes, Charset.defaultCharset());
+        }
     }
 
     private void setDirsAndFiles(Model model) {
@@ -74,18 +74,26 @@ public class MainController {
     }
 
     @GetMapping("/")
+    @SneakyThrows
     public String indexGet(Model model, @RequestParam(value="file_name", required=false) String fileName,
+                                            @RequestParam(value="file_access", required = false) String fileAccess,
                                             @RequestParam(value="action", required = false) String action,
                                             @RequestParam(value="text", required = false) String text,
                                             @RequestParam(value="dir_name", required = false) String dirName,
+                                            @RequestParam(value="dir_access", required = false) String dirAccess,
                                             @RequestParam(value="back", required = false) String back) {
 
+        // Change file focus
+        if (fileName != null && !fileName.isEmpty()) { curFile = new File(curDir, fileName); }
         // Create | Save | Open | Delete file, Delete directory
         // When opening the first time action will be null: default "open" is used
-        if (fileName != null) { curFile = new File(curDir, fileName); }
         switch (action == null ? "open" : action) {
             case "new_file":
-                text = "";
+                updateFile(text);
+                if ("read_only".equals(fileAccess)) {
+                    curFile.setReadOnly();
+                }
+                break;
             case "save":
                 updateFile(text);
             case "open":
@@ -110,6 +118,9 @@ public class MainController {
                 curDir = dir;
             } else {
                 dir.mkdir();
+                if ("read_only".equals(dirAccess)) {
+                    dir.setWritable(false);
+                }
             }
         } else if (back != null) {
             // Don't move higher than root

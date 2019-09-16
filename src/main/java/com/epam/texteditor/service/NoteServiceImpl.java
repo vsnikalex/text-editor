@@ -25,4 +25,9 @@ public class NoteServiceImpl implements NoteService {
     public List<Note> getNotesByFile(File file) {
         return noteRepository.findAllByFileOrderByModifiedDesc(file);
     }
+
+    @Override
+    public void deleteNotesByFile(File file) {
+        noteRepository.deleteNotesByFile(file);
+    }
 }

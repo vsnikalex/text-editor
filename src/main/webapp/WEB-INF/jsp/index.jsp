@@ -45,7 +45,6 @@
                         <c:forEach  items="${filesAndIcons}" var ="entry">
                             <li class="file">
 								<span>
-                                    <%-- TODO: extract data from map: key:filename value:ico --%>
 									<img src="<c:url value="/css/img/${entry.value}"/>"/>
 									<a href="/?file_name=${entry.key}">${entry.key}</a>
 								</span>

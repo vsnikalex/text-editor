@@ -11,4 +11,6 @@ public interface NoteService {
 
     List<Note> getNotesByFile(File file);
 
+    void deleteNotesByFile(File file);
+
 }

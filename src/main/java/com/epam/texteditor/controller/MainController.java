@@ -121,11 +121,13 @@ public class MainController {
                 // App start action can be added here
                 break;
             case "delete":
+                noteService.deleteNotesByFile(curFile);
                 FileUtils.deleteQuietly(curFile);
                 curFile = curDir;
                 break;
             case "rm_dir":
                 if (!curDir.equals(root)) {
+                    noteService.deleteNotesByFile(curDir);
                     FileUtils.deleteQuietly(curDir);
                     curDir = curDir.getParentFile();
                 }

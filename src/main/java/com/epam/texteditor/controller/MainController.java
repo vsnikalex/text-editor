@@ -4,6 +4,7 @@ import com.epam.texteditor.model.Note;
 import com.epam.texteditor.service.NoteService;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Controller
 public class MainController {
 
     private final NoteService noteService;
+    private final ApplicationContext context;
 
     // curDir: file browser, directory notes
     // curFile: file editor, file notes
@@ -28,9 +34,12 @@ public class MainController {
     private File curFile;
 
     public MainController(ConfigurableApplicationContext context, NoteService noteService) {
+        this.context = context;
+
         root = (File) context.getBean("root");
         curDir = root;
         curFile = curDir;
+
         this.noteService = noteService;
     }
 
@@ -64,10 +73,22 @@ public class MainController {
     private void setDirsAndFiles(Model model) {
         // Scope: file browser, directory notes
         File[] dirs = curDir.listFiles(File::isDirectory);
+
+        // Chose file ico via XML configuration depending on extension
         File[] files = curDir.listFiles(File::isFile);
+        Map<String, String> icons = (HashMap<String, String>) context.getBean("icons");
+        Map<String, String> filesAndIcons = Arrays.stream(files)
+                                .collect(Collectors.toMap(File::getName,
+                                        f -> {  String fName = f.getName();
+                                                String extension = fName.substring(fName.lastIndexOf("."));
+                                                if (icons.containsKey(extension)) {
+                                                    return icons.get(extension);
+                                                } else {
+                                                    return icons.get("default");
+                                                }}));
 
         model.addAttribute("dirs", dirs);
-        model.addAttribute("files", files);
+        model.addAttribute("filesAndIcons", filesAndIcons);
 
         // Set directory notes
         model.addAttribute("dirNotes", noteService.getNotesByFile(curDir));
@@ -118,9 +139,10 @@ public class MainController {
                 curDir = dir;
             } else {
                 dir.mkdir();
-                if ("read_only".equals(dirAccess)) {
-                    dir.setWritable(false);
-                }
+                // TODO: Prohibit directory creation if dirAccess=read_only
+//                if ("read_only".equals(dirAccess)) {
+//                    dir.setWritable(false);
+//                }
             }
         } else if (back != null) {
             // Don't move higher than root

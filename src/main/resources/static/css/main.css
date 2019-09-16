@@ -1,57 +1,121 @@
 html {min-height:100%}
 * {margin:0;padding:0}
-a {color:#963}
-a:hover {color:#C60}
-body {background:#CCD8E0 url(img/bg.jpg) repeat-x left bottom;color:#444;font:normal 62.5% Tahoma,sans-serif}
-h1 {font:normal 1.8em Tahoma,sans-serif;margin-bottom:4px}
+body {
+    background:#CCD8E0 url(img/bg.jpg) repeat-x left bottom;
+    color:#444;
+    font:normal 62.5% Tahoma,sans-serif
+}
+h1 {
+    font:normal 1.8em Tahoma,sans-serif;
+    margin-bottom:4px
+}
 h1,h2,h3 {padding-top:6px}
 /* misc */
 .clearer {clear:both}
 .left {float:left}
 .right {float:right}
 /* structure */
-.container {background:#FFF;font-size:1.2em;margin:0 auto;padding:0 10px 10px;width:1100px;height: 582px}
+.container {
+    background:#FFF;
+    font-size:1.2em;
+    margin:0 auto;
+    padding:0 10px 10px;
+    width:1100px;
+    height: 582px
+}
 /* header */
-.top {background:url(img/clouds.gif) repeat-x;padding:50px 10px 0}
+.top {
+    background:url(img/clouds.gif) repeat-x;
+    padding:50px 10px 0
+}
 /* title */
-.header {background:#FFF;font-size:1.2em;height:150px;margin:0 auto;padding:10px 10px 5px;width:1100px}
-.header .left, .header .right {background:#A4A4A0;color:#FFF;height:150px}
-.header .left {background:#B3C2C7;font:normal 2.8em "Trebuchet MS",sans-serif;line-height:150px;text-align:center;width:1100px}
-.header .right {overflow:auto;width:212px}
-.header .right p,.header .right h2 {padding:0 16px}
-.header .right h2 {padding-top:16px;font:normal 1.6em "Trebuchet MS",sans-serif}
-/* navigation */
-.navigation {background:#D9E1E5 url(img/nav.gif);
-    border-color:#DFEEF7 #CFDEE7;height:41px}
-.navigation a {background:#D9E1E5 url(img/nav.gif);border-right:1px solid #AFBEC7;color:#456;display:block;float:left;font:bold 1.1em sans-serif;line-height:41px;padding:0 20px;text-decoration:none}
-.navigation a:hover {background-position:left bottom;color:#234}
+.header {
+    background:#FFF;
+    font-size:1.2em;
+    height:125px;
+    margin:0 auto;
+    padding:10px 10px 5px;
+    width:1100px
+}
+.header .left, .header .right {
+    color:#FFF;
+    height:125px;
+    background:#B3C2C7;
+    font:normal 2.8em "Trebuchet MS",sans-serif;
+    line-height:125px;
+
+}
+.header .left {
+    float: left;
+    width:120px;
+    text-align: center;
+}
+.header .right {
+    float: right;
+    width:980px;
+    text-align: match-parent;
+}
 /* main */
 .main {border-top:4px solid #FFF}
-/* main blocks */
-#left {
-    float:left;
-    width:180px;
-}
+/* center block: file editor */
 #center {
     margin:0 auto;
     width:652px;
     text-align: center;
 }
-#right {
-    float:right;
-    width:180px;
+.navigation {
+    background:#D9E1E5 url(img/nav.gif);
+    border-color:#DFEEF7 #CFDEE7;
+    height:41px
 }
-/* center block: file editor */
 #editor {
     resize: none;
     width: 650px;
     height: 500px;
     overflow: visible;
 }
+#new_file {
+    float:left;
+    padding-left: 10px;
+}
 #delete {
     float:right;
 }
+/* left block: file browser, dir notes */
+#left {
+    float:left;
+    width:180px;
+}
+#left .note_container {
+    overflow: auto;
+    height: 240px;
+}
+#file_navigation {
+    height: 220px;
+    margin: 5px;
+    overflow: auto;
+}
+.dir {
+    background: url(img/dir.png) 0 3px no-repeat;
+    padding: 12px 30px 10px;
+}
+.file {
+    padding: 4px 0px 5px;
+}
+#dir_note {
+    margin: 5px;
+    padding:10px;
+    background-color:lightgreen;
+}
 /* right block: file/text note creation, file notes */
+#right {
+    float:right;
+    width:180px;
+}
+#right .note_container {
+    overflow: auto;
+    height: 355px;
+}
 .note_form ul {
     list-style-type:none;
 }
@@ -68,30 +132,4 @@ h1,h2,h3 {padding-top:6px}
     margin: 5px;
     padding:10px;
     background-color:skyblue;
-}
-/* common for side blocks */
-.note_container {
-    overflow: auto;
-    height: 355px;
-}
-/* left block: file browser, dir notes */
-#file_navigation {
-    height: 166px;
-    margin: 10px;
-    overflow: auto;
-}
-.dir {
-    list-style: none;
-    background: url(img/dir.png) 0 3px no-repeat;
-    padding: 0 15px 15px;
-}
-.file {
-    list-style: none;
-    background: url(img/file.png) 0 3px no-repeat;
-    padding: 0 15px 15px;
-}
-#dir_note {
-    margin: 5px;
-    padding:10px;
-    background-color:lightgreen;
 }

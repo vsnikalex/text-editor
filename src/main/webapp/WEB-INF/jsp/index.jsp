@@ -6,12 +6,14 @@
     <meta charset="UTF-8" />
     <title>EPAM Text Editor</title>
     <link href="<c:url value="/css/main.css" />" rel="stylesheet">
-
 </head>
 <body>
 <div class="top">
     <div class="header">
         <div class="left">
+            <img src="<c:url value="/css/img/logo.png"/>" height="120" alt="label">
+        </div>
+        <div class="right">
             Text Editor Home Page
         </div>
     </div>
@@ -35,20 +37,18 @@
                         </li>
                         <c:forEach  items="${dirs}" var ="dir">
                             <li class="dir">
-                                <div>
 								<span>
 									<a href="/?dir_name=${dir.name}">${dir.name}</a>
 								</span>
-                                </div>
                             </li>
                         </c:forEach>
-                        <c:forEach  items="${files}" var ="file">
+                        <c:forEach  items="${filesAndIcons}" var ="entry">
                             <li class="file">
-                                <div>
 								<span>
-									<a href="/?file_name=${file.name}">${file.name}</a>
+                                    <%-- TODO: extract data from map: key:filename value:ico --%>
+									<img src="<c:url value="/css/img/${entry.value}"/>"/>
+									<a href="/?file_name=${entry.key}">${entry.key}</a>
 								</span>
-                                </div>
                             </li>
                         </c:forEach>
                     </ul>

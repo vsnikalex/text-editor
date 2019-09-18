@@ -77,21 +77,20 @@ public class MainController {
         // Chose file ico via XML configuration depending on extension
         File[] files = curDir.listFiles(File::isFile);
         Map<String, String> icons = (HashMap<String, String>) context.getBean("icons");
-        Map<String, String> filesAndIcons = Arrays.stream(files)
-                                .collect(Collectors.toMap(File::getName,
-                                        f -> {  String fName = f.getName();
-                                                String extension = fName.substring(fName.lastIndexOf("."));
-                                                if (icons.containsKey(extension)) {
-                                                    return icons.get(extension);
-                                                } else {
-                                                    return icons.get("default");
-                                                }}));
+
+        Map<String, String> filesAndIcons = new HashMap<>();
+        for (File f : files) {
+            String fName = f.getName();
+
+            String extension = fName.substring(fName.lastIndexOf("."));
+            String img = icons.containsKey(extension) ? icons.get(extension) : icons.get("default");
+
+            filesAndIcons.put(fName, img);
+        }
 
         model.addAttribute("dirs", dirs);
-        model.addAttribute("filesAndIcons", filesAndIcons);
-
-        // Set directory notes
         model.addAttribute("dirNotes", noteService.getNotesByFile(curDir));
+        model.addAttribute("filesAndIcons", filesAndIcons);
     }
 
     @GetMapping("/")

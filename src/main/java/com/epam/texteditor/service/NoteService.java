@@ -4,6 +4,7 @@ import com.epam.texteditor.model.Note;
 
 import java.io.File;
 import java.util.List;
+import java.util.stream.Stream;
 
 public interface NoteService {
 
@@ -12,5 +13,7 @@ public interface NoteService {
     List<Note> getNotesByFile(File file);
 
     void deleteNotesByFile(File file);
+
+    List<Note> getAllNotes();
 
 }

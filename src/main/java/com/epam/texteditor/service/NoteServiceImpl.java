@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -29,5 +30,10 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public void deleteNotesByFile(File file) {
         noteRepository.deleteNotesByFile(file);
+    }
+
+    @Override
+    public List<Note> getAllNotes() {
+        return noteRepository.findAll();
     }
 }

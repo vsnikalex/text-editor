@@ -49,7 +49,7 @@ public class MainController {
 
         // True after opening the app (curFile is root directory by default)
         // True after deleting file (curFile will be set to curDir)
-        if (curFile.isDirectory()) {
+        if (!curFile.exists() || curFile.isDirectory()) {
             model.addAttribute("text", "");
         } else {
             String text = FileUtils.readFileToString(curFile, Charset.defaultCharset());

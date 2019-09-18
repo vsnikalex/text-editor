@@ -7,11 +7,14 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Repository
 public interface NoteRepository extends CrudRepository<Note, Long> {
 
     List<Note> findAllByFileOrderByModifiedDesc(File file);
+
+    List<Note> findAll();
 
     @Transactional
     void deleteNotesByFile(File file);

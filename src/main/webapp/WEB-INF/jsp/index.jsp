@@ -1,5 +1,6 @@
 ﻿<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +15,7 @@
             <img src="<c:url value="/css/img/logo.png"/>" height="120" alt="label">
         </div>
         <div class="right">
-            Text Editor Home Page
+            <h3><spring:message code="greeting" text="default"/></h3>
         </div>
     </div>
 </div>

@@ -30,4 +30,5 @@ dependencies {
 	compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '9.0.24'
 
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+	compile group: 'com.googlecode.juniversalchardet', name: 'juniversalchardet', version: '1.0.3'
 }

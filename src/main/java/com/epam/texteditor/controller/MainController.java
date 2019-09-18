@@ -4,6 +4,7 @@ import com.epam.texteditor.model.Note;
 import com.epam.texteditor.service.NoteService;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
+import org.mozilla.universalchardet.UniversalDetector;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -15,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @Controller
@@ -43,16 +42,30 @@ public class MainController {
         this.noteService = noteService;
     }
 
+    private static String getFileEncoding(File file) throws IOException{
+        UniversalDetector detector = new UniversalDetector(null);
+        byte[] bytes = FileUtils.readFileToByteArray(file);
+        detector.handleData(bytes, 0, bytes.length);
+        detector.dataEnd();
+        return detector.getDetectedCharset();
+    }
+
     @SneakyThrows(IOException.class)
     private void setDocAndNotes(Model model) {
         // Scope: file editor, file notes
 
-        // True after opening the app (curFile is root directory by default)
-        // True after deleting file (curFile will be set to curDir)
+        // curFile is a directory after opening the app (curFile is root directory by default)
+        // and after deleting a file (curFile will be set to curDir)
         if (!curFile.exists() || curFile.isDirectory()) {
             model.addAttribute("text", "");
         } else {
-            String text = FileUtils.readFileToString(curFile, Charset.defaultCharset());
+            String encoding = getFileEncoding(curFile);
+            if (encoding == null) {
+                encoding = "UTF-8";
+            }
+
+            String text = FileUtils.readFileToString(curFile,  Charset.forName(encoding));
+
             model.addAttribute("text", text);
         }
 

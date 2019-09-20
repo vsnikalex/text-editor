@@ -2,17 +2,15 @@ package com.epam.texteditor.configuration;
 
 import com.epam.texteditor.model.Note;
 import com.epam.texteditor.service.NoteService;
-import com.epam.texteditor.service.NoteServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RefreshDatabase {
+public class ScheduledDatabaseRefresher {
 
     private final NoteService noteService;
 
-    public RefreshDatabase(NoteService noteService) {
+    public ScheduledDatabaseRefresher(NoteService noteService) {
         this.noteService = noteService;
     }
 

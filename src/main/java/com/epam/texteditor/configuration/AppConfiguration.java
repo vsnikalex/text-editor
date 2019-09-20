@@ -15,8 +15,9 @@ import java.util.Locale;
 @Configuration
 @EnableScheduling
 @ImportResource("classpath:app-config.xml")
-public class XmlConfiguration implements WebMvcConfigurer {
+public class AppConfiguration implements WebMvcConfigurer {
 
+    // Configure localization
     @Bean
     public LocaleResolver localeResolver() {
         // In order for our application to be able to determine which locale is currently being used

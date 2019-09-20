@@ -19,6 +19,7 @@ public class XmlConfiguration implements WebMvcConfigurer {
 
     @Bean
     public LocaleResolver localeResolver() {
+        // In order for our application to be able to determine which locale is currently being used
         SessionLocaleResolver slr = new SessionLocaleResolver();
         slr.setDefaultLocale(Locale.US);
         return slr;
@@ -26,6 +27,7 @@ public class XmlConfiguration implements WebMvcConfigurer {
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
+        // Switch to a new locale based on the value of the lang parameter
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
         return lci;
@@ -33,6 +35,7 @@ public class XmlConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // To take effect, this bean needs to be added to the application's interceptor registry
         registry.addInterceptor(localeChangeInterceptor());
     }
 

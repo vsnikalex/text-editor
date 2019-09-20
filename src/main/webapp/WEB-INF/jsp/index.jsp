@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>EPAM Text Editor</title>
+    <title><spring:message code="title"/></title>
     <link href="<c:url value="/css/main.css" />" rel="stylesheet">
 </head>
 <body>
@@ -15,7 +15,11 @@
             <img src="<c:url value="/css/img/logo.png"/>" height="120" alt="label">
         </div>
         <div class="right">
-            <h3><spring:message code="greeting" text="default"/></h3>
+            <div class="right_l"><spring:message code="greeting"/></div>
+            <div class="right_r">
+                <span><spring:message code="lang.change"/></span>
+                <a href="/?lang=en">EN</a> | <a href="/?lang=de">DE</a>
+            </div>
         </div>
     </div>
 </div>
@@ -58,13 +62,17 @@
                     <form action="/" method="GET">
                         <input name="dir_name" />
                         <p><select multiple name="dir_access" style="height:20px;width:165px;margin:3px">
-                            <option selected value="read_write">read and write</option>
-                            <option value="read_only">read only</option>
+                            <option selected value="read_write"><spring:message code="full_access"/></option>
+                            <option value="read_only"><spring:message code="read_only"/></option>
                         </select></p>
-                        <button style="height:20px;width:165px;margin:3px" type="submit" name="action" value="new_dir">New directory</button>
+                        <button style="height:20px;width:165px;margin:3px" type="submit" name="action" value="new_dir">
+                            <spring:message code="new_directory"/>
+                        </button>
                     </form>
                     <form action="/" method="GET">
-                        <button style="height:20px;width:165px;margin:3px" type="submit" name="action" value="rm_dir">Delete directory</button>
+                        <button style="height:20px;width:165px;margin:3px" type="submit" name="action" value="rm_dir">
+                            <spring:message code="delete_directory"/>
+                        </button>
                     </form>
                 </div>
 
@@ -86,23 +94,31 @@
                     <form class="note_form" action="/" method="POST">
                         <ul>
                             <li>
-                                <input type="radio" name="note_type" value="text_note" checked> Text note
+                                <input type="radio" name="note_type" value="text_note" checked>
+                                <spring:message code="text_note"/>
                             </li>
                             <li>
-                                <input type="radio" name="note_type" value="dir_note"> Directory note
+                                <input type="radio" name="note_type" value="dir_note">
+                                <spring:message code="dir_note"/>
                             </li>
                         </ul>
                         <ul>
                             <li>
-                                <label for="note_name">Note name:</label>
+                                <label for="note_name">
+                                    <spring:message code="note_name"/>
+                                </label>
                                 <input size="18" type="text" id = "note_name" name="note_name"/>
                             </li>
                             <li>
-                                <label for="note_text">Note text:</label>
+                                <label for="note_text">
+                                    <spring:message code="note_text"/>
+                                </label>
                                 <textarea id="note_text" name="note_text" ></textarea>
                             </li>
                             <li>
-                                <button style="height:25px;width:160px" class="submit" type="submit">Save note</button>
+                                <button style="height:25px;width:160px" class="submit" type="submit">
+                                    <spring:message code="save_note"/>
+                                </button>
                             </li>
                         </ul>
                     </form>
@@ -125,18 +141,24 @@
 
                     <div id="delete">
                         <form action="/" method="GET">
-                            <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="delete">Delete doc</button>
+                            <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="delete">
+                                <spring:message code="delete_doc"/>
+                            </button>
                         </form>
                     </div>
 
                     <form action="/" method="GET">
                         <input name="file_name" id="file_name" />
                         <select multiple name="file_access" size="1" style="width:120px">
-                            <option selected value="read_write">read and write</option>
-                            <option value="read_only">read only</option>
+                            <option selected value="read_write"><spring:message code="full_access"/></option>
+                            <option value="read_only"><spring:message code="read_only"/></option>
                         </select>
-                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">New file</button>
-                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="save">Save</button>
+                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">
+                            <spring:message code="new_file"/>
+                        </button>
+                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="save">
+                            <spring:message code="save"/>
+                        </button>
                         <textarea id="editor" name="text">${text}</textarea>
                     </form>
 

@@ -39,7 +39,6 @@ h1,h2,h3 {padding-top:6px}
 }
 .header .left, .header .right {
     color:#FFF;
-    height:125px;
     background:#B3C2C7;
     font:normal 2.8em "Trebuchet MS",sans-serif;
     line-height:125px;
@@ -48,12 +47,18 @@ h1,h2,h3 {padding-top:6px}
 .header .left {
     float: left;
     width:120px;
+    height:125px;
     text-align: center;
 }
-.header .right {
+.header .right .right_l {
+    float: left;
+    width:650px;
+    font-size: 0.8em;
+}
+.header .right .right_r {
     float: right;
-    width:980px;
-    text-align: match-parent;
+    width:330px;
+    font-size: 0.7em;
 }
 /* main */
 .main {border-top:4px solid #FFF}

@@ -107,7 +107,7 @@ public class MainController {
     }
 
     @GetMapping("/")
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     public String indexGet(Model model, @RequestParam(value="file_name", required=false) String fileName,
                                             @RequestParam(value="file_access", required = false) String fileAccess,
                                             @RequestParam(value="action", required = false) String action,

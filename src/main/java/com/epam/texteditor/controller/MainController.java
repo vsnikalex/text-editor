@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.DosFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -138,7 +141,9 @@ public class MainController {
                 curFile = curDir;
                 break;
             case "rm_dir":
-                if (!curDir.equals(root)) {
+                Path file = curDir.toPath();
+                DosFileAttributes dfa = Files.readAttributes(file, DosFileAttributes.class);
+                if (!curDir.equals(root) && !dfa.isReadOnly()) {
                     noteService.deleteNotesByFile(curDir);
                     FileUtils.deleteQuietly(curDir);
                     curDir = curDir.getParentFile();
@@ -150,13 +155,16 @@ public class MainController {
         if (dirName != null) {
             File dir = new File(curDir.getAbsolutePath(), dirName);
             if (dir.exists()) {
+                // Open
                 curDir = dir;
             } else {
+                // Create, set set readonly, if specified
                 dir.mkdir();
-                // TODO: Prohibit directory creation if dirAccess=read_only
-//                if ("read_only".equals(dirAccess)) {
-//                    dir.setWritable(false);
-//                }
+
+                if ("read_only".equals(dirAccess)) {
+                    Path file = dir.toPath();
+                    Files.setAttribute(file, "dos:readonly", true);
+                }
             }
         } else if (back != null) {
             // Don't move higher than root

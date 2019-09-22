@@ -33,8 +33,7 @@
             <div id="left">
                 <div id="file_navigation">
                     <ul>
-                        <c:choose>
-                            <c:when test="${isRoot=='false'}">
+                        <c:if test="${isRoot=='false'}">
                             <li class="dir">
                                 <div>
                                      <span>
@@ -42,8 +41,7 @@
                                     </span>
                                 </div>
                             </li>
-                            </c:when>
-                        </c:choose>
+                        </c:if>
                         <c:forEach  items="${dirs}" var ="dir">
                             <li class="dir">
 								<span>
@@ -97,12 +95,14 @@
                 <div>
                     <form class="note_form" action="/" method="POST">
                         <ul>
+                            <c:if test="${curFileIsDir=='false'}">
+                                <li>
+                                    <input type="radio" name="note_type" value="text_note" >
+                                    <spring:message code="text_note"/>
+                                </li>
+                            </c:if>
                             <li>
-                                <input type="radio" name="note_type" value="text_note" checked>
-                                <spring:message code="text_note"/>
-                            </li>
-                            <li>
-                                <input type="radio" name="note_type" value="dir_note">
+                                <input type="radio" name="note_type" value="dir_note" checked>
                                 <spring:message code="dir_note"/>
                             </li>
                         </ul>

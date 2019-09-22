@@ -125,6 +125,7 @@ public class MainController {
         model.addAttribute("filesAndIcons", filesAndIcons);
 
         model.addAttribute("isRoot", curDir.equals(root));
+        model.addAttribute("curFileIsDir", curFile.isDirectory());
     }
 
     @GetMapping("/")
@@ -210,6 +211,7 @@ public class MainController {
 
         setDocAndNotes(model);
         setDirsAndFiles(model);
+
 
         return "index";
     }

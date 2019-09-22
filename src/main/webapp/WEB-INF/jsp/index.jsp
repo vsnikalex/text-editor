@@ -33,13 +33,17 @@
             <div id="left">
                 <div id="file_navigation">
                     <ul>
-                        <li class="dir">
-                            <div>
-								<span>
-									<a href="/?back=1">..</a>
-								</span>
-                            </div>
-                        </li>
+                        <c:choose>
+                            <c:when test="${isRoot=='false'}">
+                            <li class="dir">
+                                <div>
+                                     <span>
+                                        <a href="/?back=1">..</a>
+                                    </span>
+                                </div>
+                            </li>
+                            </c:when>
+                        </c:choose>
                         <c:forEach  items="${dirs}" var ="dir">
                             <li class="dir">
 								<span>

@@ -123,6 +123,8 @@ public class MainController {
         model.addAttribute("dirs", dirs);
         model.addAttribute("dirNotes", noteService.getNotesByFile(curDir));
         model.addAttribute("filesAndIcons", filesAndIcons);
+
+        model.addAttribute("isRoot", curDir.equals(root));
     }
 
     @GetMapping("/")

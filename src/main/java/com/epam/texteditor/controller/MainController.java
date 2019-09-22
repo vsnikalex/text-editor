@@ -119,7 +119,9 @@ public class MainController {
         for (File f : files) {
             String fName = f.getName();
 
-            String extension = fName.substring(fName.lastIndexOf("."));
+            // if file is without extension or there is not appropriate icon, use default one
+            int i = fName.lastIndexOf(".");
+            String extension = (i == -1) ? "default" : fName.substring(i);
             String img = icons.containsKey(extension) ? icons.get(extension) : icons.get("default");
 
             filesAndIcons.put(fName, img);

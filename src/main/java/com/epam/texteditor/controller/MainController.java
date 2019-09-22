@@ -39,18 +39,35 @@ public class MainController {
         this.context = context;
 
         root = (File) context.getBean("root");
+        makeReadOnly(root);
         curDir = root;
         curFile = curDir;
 
         this.noteService = noteService;
     }
 
-    private static String getFileEncoding(File file) throws IOException{
+    @SneakyThrows(IOException.class)
+    private static String getFileEncoding(File file) {
         UniversalDetector detector = new UniversalDetector(null);
         byte[] bytes = FileUtils.readFileToByteArray(file);
         detector.handleData(bytes, 0, bytes.length);
         detector.dataEnd();
         return detector.getDetectedCharset();
+    }
+
+    @SneakyThrows(IOException.class)
+    private static void makeReadOnly(File file) {
+        // this method is required because file.setReadOnly() doesn't work for directory
+        Path path = file.toPath();
+        Files.setAttribute(path, "dos:readonly", true);
+    }
+
+    @SneakyThrows(IOException.class)
+    private static boolean isReadOnly(File file) {
+        // this method is required because file.canWrite() always returns true for directory
+        Path path = file.toPath();
+        DosFileAttributes dfa = Files.readAttributes(path, DosFileAttributes.class);
+        return dfa.isReadOnly();
     }
 
     @SneakyThrows(IOException.class)
@@ -68,7 +85,6 @@ public class MainController {
             }
 
             String text = FileUtils.readFileToString(curFile,  Charset.forName(encoding));
-
             model.addAttribute("text", text);
         }
 
@@ -127,7 +143,7 @@ public class MainController {
             case "new_file":
                 updateFile(text);
                 if ("read_only".equals(fileAccess)) {
-                    curFile.setReadOnly();
+                    makeReadOnly(curFile);
                 }
                 break;
             case "save":
@@ -141,9 +157,8 @@ public class MainController {
                 curFile = curDir;
                 break;
             case "rm_dir":
-                Path file = curDir.toPath();
-                DosFileAttributes dfa = Files.readAttributes(file, DosFileAttributes.class);
-                if (!curDir.equals(root) && !dfa.isReadOnly()) {
+                // root is also readOnly (set in constructor)
+                if (!isReadOnly(curDir)) {
                     noteService.deleteNotesByFile(curDir);
                     FileUtils.deleteQuietly(curDir);
                     curDir = curDir.getParentFile();
@@ -153,17 +168,14 @@ public class MainController {
 
         // Open | Create directory
         if (dirName != null) {
-            File dir = new File(curDir.getAbsolutePath(), dirName);
-            if (dir.exists()) {
+            File newDir = new File(curDir.getAbsolutePath(), dirName);
+            if (newDir.exists()) {
                 // Open
-                curDir = dir;
+                curDir = newDir;
             } else {
-                // Create, set set readonly, if specified
-                dir.mkdir();
-
+                newDir.mkdir();
                 if ("read_only".equals(dirAccess)) {
-                    Path file = dir.toPath();
-                    Files.setAttribute(file, "dos:readonly", true);
+                    makeReadOnly(newDir);
                 }
             }
         } else if (back != null) {

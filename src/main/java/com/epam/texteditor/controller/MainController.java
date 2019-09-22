@@ -88,10 +88,15 @@ public class MainController {
             model.addAttribute("text", text);
         }
 
-        // Set document name
-        model.addAttribute("curFile", curFile.getAbsolutePath());
+        // Set document name and access
+        model.addAttribute("curFile", curFile);
+        model.addAttribute("canWrite", curFile.canWrite());
         // Set text notes
-        model.addAttribute("textNotes", noteService.getNotesByFile(curFile));
+        if (!curFile.isDirectory()) {
+            model.addAttribute("textNotes", noteService.getNotesByFile(curFile));
+        }
+
+        model.addAttribute("curFileIsDir", curFile.isDirectory());
     }
 
     @SneakyThrows(IOException.class)
@@ -120,12 +125,15 @@ public class MainController {
             filesAndIcons.put(fName, img);
         }
 
+        // Set directory name and access
+        model.addAttribute("curDir", curDir);
+        model.addAttribute("readOnly", isReadOnly(curDir));
+
         model.addAttribute("dirs", dirs);
         model.addAttribute("dirNotes", noteService.getNotesByFile(curDir));
         model.addAttribute("filesAndIcons", filesAndIcons);
 
         model.addAttribute("isRoot", curDir.equals(root));
-        model.addAttribute("curFileIsDir", curFile.isDirectory());
     }
 
     @GetMapping("/")

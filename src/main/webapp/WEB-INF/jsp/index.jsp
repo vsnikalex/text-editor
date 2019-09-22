@@ -32,6 +32,11 @@
 
             <div id="left">
                 <div id="file_navigation">
+                    <h4>/${curDir.name}
+                        <c:if test="${readOnly=='true'}">
+                            <i>[read only]</i>
+                        </c:if>
+                    </h4>
                     <ul>
                         <c:if test="${isRoot=='false'}">
                             <li class="dir">
@@ -166,7 +171,11 @@
                         <textarea id="editor" name="text">${text}</textarea>
                     </form>
 
-                    <h3>${curFile}</h3>
+                    <h3>${curFile.absolutePath}
+                        <c:if test="${canWrite=='false'}">
+                            <i>[read only]</i>
+                        </c:if>
+                    </h3>
 
                 </div>
 

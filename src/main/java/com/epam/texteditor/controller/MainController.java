@@ -29,15 +29,16 @@ public class MainController {
     private final NoteService noteService;
     private final ApplicationContext context;
 
-    // curDir: file browser, directory notes
-    // curFile: file editor, file notes
     private File root;
+    // Scope: directory-file browser, directory notes
     private File curDir;
+    // Scope: file editor, file notes
     private File curFile;
 
     public MainController(ConfigurableApplicationContext context, NoteService noteService) {
         this.context = context;
 
+        // At start, application focuses on root directory
         root = (File) context.getBean("root");
         makeReadOnly(root);
         curDir = root;
@@ -57,14 +58,14 @@ public class MainController {
 
     @SneakyThrows(IOException.class)
     private static void makeReadOnly(File file) {
-        // this method is required because file.setReadOnly() doesn't work for directory
+        // This method is required because file.setReadOnly() doesn't work for directory
         Path path = file.toPath();
         Files.setAttribute(path, "dos:readonly", true);
     }
 
     @SneakyThrows(IOException.class)
     private static boolean isReadOnly(File file) {
-        // this method is required because file.canWrite() always returns true for directory
+        // This method is required because file.canWrite() always returns true for directory without SecurityManager
         Path path = file.toPath();
         DosFileAttributes dfa = Files.readAttributes(path, DosFileAttributes.class);
         return dfa.isReadOnly();
@@ -76,8 +77,9 @@ public class MainController {
 
         // curFile is a directory after opening the app (curFile is root directory by default)
         // and after deleting a file (curFile will be set to curDir)
-        if (!curFile.exists() || curFile.isDirectory()) {
+        if (curFile.isDirectory()) {
             model.addAttribute("text", "");
+            model.addAttribute("curFileIsDir", true);
         } else {
             String encoding = getFileEncoding(curFile);
             if (encoding == null) {
@@ -85,23 +87,19 @@ public class MainController {
             }
 
             String text = FileUtils.readFileToString(curFile,  Charset.forName(encoding));
+
             model.addAttribute("text", text);
+            model.addAttribute("textNotes", noteService.getNotesByFile(curFile));
         }
 
         // Set document name and access
         model.addAttribute("curFile", curFile);
         model.addAttribute("canWrite", curFile.canWrite());
-        // Set text notes
-        if (!curFile.isDirectory()) {
-            model.addAttribute("textNotes", noteService.getNotesByFile(curFile));
-        }
-
-        model.addAttribute("curFileIsDir", curFile.isDirectory());
     }
 
     @SneakyThrows(IOException.class)
     private void updateFile(String changes) {
-        // If file is writable or new
+        // If file exists and writable or new
         if (curFile.canWrite() || !curFile.exists()) {
             FileUtils.writeStringToFile(curFile, changes, Charset.defaultCharset());
         }
@@ -127,76 +125,70 @@ public class MainController {
             filesAndIcons.put(fName, img);
         }
 
-        // Set directory name and access
+        model.addAttribute("isRoot", curDir.equals(root));
         model.addAttribute("curDir", curDir);
         model.addAttribute("readOnly", isReadOnly(curDir));
 
         model.addAttribute("dirs", dirs);
         model.addAttribute("dirNotes", noteService.getNotesByFile(curDir));
         model.addAttribute("filesAndIcons", filesAndIcons);
+    }
 
-        model.addAttribute("isRoot", curDir.equals(root));
+    private boolean removeDirOrFile(File file) {
+        if (isReadOnly(file)) { return false; }
+
+        noteService.deleteNotesByFile(file);
+        return FileUtils.deleteQuietly(file);
     }
 
     @GetMapping("/")
     @SneakyThrows
-    public String indexGet(Model model, @RequestParam(value="file_name", required=false) String fileName,
-                                            @RequestParam(value="file_access", required = false) String fileAccess,
-                                            @RequestParam(value="action", required = false) String action,
-                                            @RequestParam(value="text", required = false) String text,
-                                            @RequestParam(value="dir_name", required = false) String dirName,
-                                            @RequestParam(value="dir_access", required = false) String dirAccess,
-                                            @RequestParam(value="back", required = false) String back) {
+    public String indexGet(Model model,     @RequestParam(value="action", required = false) String action,
 
-        // Change file focus
-        if (fileName != null && !fileName.isEmpty()) { curFile = new File(curDir, fileName); }
-        // Create | Save | Open | Delete file, Delete directory
-        // When opening the first time action will be null: default "open" is used
-        switch (action == null ? "open" : action) {
+                                            @RequestParam(value="file_name", required=false) String fileName,
+                                            @RequestParam(value="file_access", required = false) String fileAccess,
+                                            @RequestParam(value="text", required = false) String text,
+
+                                            @RequestParam(value="dir_name", required = false) String dirName,
+                                            @RequestParam(value="dir_access", required = false) String dirAccess) {
+
+        if (action != null)
+        switch (action) {
             case "new_file":
+                curFile = new File(curDir, fileName);
                 updateFile(text);
                 if ("read_only".equals(fileAccess)) {
                     makeReadOnly(curFile);
                 }
                 break;
-            case "save":
-                updateFile(text);
-            case "open":
-                // App start action can be added here
+            case "open_file":
+                curFile = new File(curDir, fileName);
                 break;
-            case "delete":
-                noteService.deleteNotesByFile(curFile);
-                FileUtils.deleteQuietly(curFile);
-                curFile = curDir;
+            case "rm_file":
+                if (removeDirOrFile(curFile)) {
+                    curFile = curDir;
+                }
+                break;
+            case "new_dir":
+                File newDir = new File(curDir.getAbsolutePath(), dirName);
+                if (!newDir.exists()) {
+                    newDir.mkdir();
+                    if ("read_only".equals(dirAccess)) {
+                        makeReadOnly(newDir);
+                    }
+                }
+                break;
+            case "open_dir":
+                curDir = new File(curDir, dirName);
+                break;
+            case "go_back":
+                curDir = new File(curDir.getParent());
                 break;
             case "rm_dir":
-                // root is also readOnly (set in constructor)
-                if (!isReadOnly(curDir)) {
-                    noteService.deleteNotesByFile(curDir);
-                    FileUtils.deleteQuietly(curDir);
+                if (removeDirOrFile(curDir)) {
                     curDir = curDir.getParentFile();
                 }
                 break;
-        }
-
-        // Open | Create directory
-        if (dirName != null) {
-            File newDir = new File(curDir.getAbsolutePath(), dirName);
-            if (newDir.exists()) {
-                // Open
-                curDir = newDir;
-            } else {
-                newDir.mkdir();
-                if ("read_only".equals(dirAccess)) {
-                    makeReadOnly(newDir);
-                }
-            }
-        } else if (back != null) {
-            // Don't move higher than root
-            File moveBack = new File(curDir.getParent());
-            if (!moveBack.equals(root.getParentFile())) {
-                curDir = moveBack;
-            }
         }
 
         setDocAndNotes(model);
@@ -221,7 +213,6 @@ public class MainController {
 
         setDocAndNotes(model);
         setDirsAndFiles(model);
-
 
         return "index";
     }

@@ -42,7 +42,7 @@
                             <li class="dir">
                                 <div>
                                      <span>
-                                        <a href="/?back=1">..</a>
+                                        <a href="/?action=go_back">..</a>
                                     </span>
                                 </div>
                             </li>
@@ -50,7 +50,7 @@
                         <c:forEach  items="${dirs}" var ="dir">
                             <li class="dir">
 								<span>
-									<a href="/?dir_name=${dir.name}">${dir.name}</a>
+									<a href="/?action=open_dir&dir_name=${dir.name}">${dir.name}</a>
 								</span>
                             </li>
                         </c:forEach>
@@ -58,7 +58,7 @@
                             <li class="file">
 								<span>
 									<img src="<c:url value="/css/img/${entry.value}"/>"/>
-									<a href="/?file_name=${entry.key}">${entry.key}</a>
+									<a href="/?action=open_file&file_name=${entry.key}">${entry.key}</a>
 								</span>
                             </li>
                         </c:forEach>
@@ -100,7 +100,7 @@
                 <div>
                     <form class="note_form" action="/" method="POST">
                         <ul>
-                            <c:if test="${curFileIsDir=='false'}">
+                            <c:if test="${curFileIsDir!='true'}">
                                 <li>
                                     <input type="radio" name="note_type" value="text_note" >
                                     <spring:message code="text_note"/>
@@ -150,7 +150,7 @@
 
                     <div id="delete">
                         <form action="/" method="GET">
-                            <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="delete">
+                            <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="rm_file">
                                 <spring:message code="delete_doc"/>
                             </button>
                         </form>
@@ -164,9 +164,6 @@
                         </select>
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">
                             <spring:message code="new_file"/>
-                        </button>
-                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="save">
-                            <spring:message code="save"/>
                         </button>
                         <textarea id="editor" name="text">${text}</textarea>
                     </form>

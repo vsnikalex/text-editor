@@ -2,8 +2,6 @@ package com.epam.texteditor.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,11 +11,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 @Configuration
-@EnableScheduling
-@ImportResource("classpath:app-config.xml")
-public class AppConfiguration implements WebMvcConfigurer {
+public class LocalizationConfig implements WebMvcConfigurer {
 
-    // Configure localization
     @Bean
     public LocaleResolver localeResolver() {
         // In order for our application to be able to determine which locale is currently being used

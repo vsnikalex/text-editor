@@ -7,6 +7,11 @@
     <meta charset="UTF-8" />
     <title><spring:message code="title"/></title>
     <link href="<c:url value="/css/main.css" />" rel="stylesheet">
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="<c:url value="/js/app.js" />"></script>
 </head>
 <body>
 <div class="top">
@@ -67,7 +72,7 @@
 
                 <div>
                     <form action="/" method="GET">
-                        <input name="dir_name" />
+                        <input name="dir_name" placeholder="Directory name..." />
                         <p><select multiple name="dir_access" style="height:20px;width:165px;margin:3px">
                             <option selected value="read_write"><spring:message code="full_access"/></option>
                             <option value="read_only"><spring:message code="read_only"/></option>
@@ -157,7 +162,7 @@
                     </div>
 
                     <form action="/" method="GET">
-                        <input name="file_name" id="file_name" />
+                        <input name="file_name" id="file_name" placeholder="File name..."/>
                         <select multiple name="file_access" size="1" style="width:120px">
                             <option selected value="read_write"><spring:message code="full_access"/></option>
                             <option value="read_only"><spring:message code="read_only"/></option>

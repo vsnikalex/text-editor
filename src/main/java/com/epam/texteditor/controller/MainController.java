@@ -40,35 +40,11 @@ public class MainController {
 
         // At start, application focuses on root directory
         root = (File) context.getBean("root");
-        makeReadOnly(root);
+        EditorUtils.makeReadOnly(root);
         curDir = root;
         curFile = curDir;
 
         this.noteService = noteService;
-    }
-
-    @SneakyThrows(IOException.class)
-    private static String getFileEncoding(File file) {
-        UniversalDetector detector = new UniversalDetector(null);
-        byte[] bytes = FileUtils.readFileToByteArray(file);
-        detector.handleData(bytes, 0, bytes.length);
-        detector.dataEnd();
-        return detector.getDetectedCharset();
-    }
-
-    @SneakyThrows(IOException.class)
-    private static void makeReadOnly(File file) {
-        // This method is required because file.setReadOnly() doesn't work for directory
-        Path path = file.toPath();
-        Files.setAttribute(path, "dos:readonly", true);
-    }
-
-    @SneakyThrows(IOException.class)
-    private static boolean isReadOnly(File file) {
-        // This method is required because file.canWrite() always returns true for directory without SecurityManager
-        Path path = file.toPath();
-        DosFileAttributes dfa = Files.readAttributes(path, DosFileAttributes.class);
-        return dfa.isReadOnly();
     }
 
     @SneakyThrows(IOException.class)
@@ -81,7 +57,7 @@ public class MainController {
             model.addAttribute("text", "");
             model.addAttribute("curFileIsDir", true);
         } else {
-            String encoding = getFileEncoding(curFile);
+            String encoding = EditorUtils.getFileEncoding(curFile);
             if (encoding == null) {
                 encoding = "UTF-8";
             }
@@ -95,14 +71,6 @@ public class MainController {
         // Set document name and access
         model.addAttribute("curFile", curFile);
         model.addAttribute("canWrite", curFile.canWrite());
-    }
-
-    @SneakyThrows(IOException.class)
-    private void updateFile(String changes) {
-        // If file exists and writable or new
-        if (curFile.canWrite() || !curFile.exists()) {
-            FileUtils.writeStringToFile(curFile, changes, Charset.defaultCharset());
-        }
     }
 
     private void setDirsAndFiles(Model model) {
@@ -127,7 +95,7 @@ public class MainController {
 
         model.addAttribute("isRoot", curDir.equals(root));
         model.addAttribute("curDir", curDir);
-        model.addAttribute("readOnly", isReadOnly(curDir));
+        model.addAttribute("readOnly", EditorUtils.isReadOnly(curDir));
 
         model.addAttribute("dirs", dirs);
         model.addAttribute("dirNotes", noteService.getNotesByFile(curDir));
@@ -135,7 +103,7 @@ public class MainController {
     }
 
     private boolean removeDirOrFile(File file) {
-        if (isReadOnly(file)) { return false; }
+        if (EditorUtils.isReadOnly(file)) { return false; }
 
         noteService.deleteNotesByFile(file);
         return FileUtils.deleteQuietly(file);
@@ -156,9 +124,9 @@ public class MainController {
         switch (action) {
             case "new_file":
                 curFile = new File(curDir, fileName);
-                updateFile(text);
+                EditorUtils.updateOrCreateFile(curFile, text);
                 if ("read_only".equals(fileAccess)) {
-                    makeReadOnly(curFile);
+                    EditorUtils.makeReadOnly(curFile);
                 }
                 break;
             case "open_file":
@@ -174,7 +142,7 @@ public class MainController {
                 if (!newDir.exists()) {
                     newDir.mkdir();
                     if ("read_only".equals(dirAccess)) {
-                        makeReadOnly(newDir);
+                        EditorUtils.makeReadOnly(newDir);
                     }
                 }
                 break;

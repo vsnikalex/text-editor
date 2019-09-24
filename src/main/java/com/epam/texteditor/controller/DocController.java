@@ -5,15 +5,18 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.io.File;
+
+
 @Controller
 public class DocController {
 
     @MessageMapping("/text")
     @SendTo("/topic/files")
-    public Doc doc(Doc doc) throws Exception {
+    public Doc doc(Doc doc) {
 
         // Save to file system
-        EditorUtils.updateOrCreateFile(doc.getFile(), doc.getText());
+        EditorUtils.updateOrCreateFile(new File(doc.getFile()), doc.getText());
 
         return doc;
     }

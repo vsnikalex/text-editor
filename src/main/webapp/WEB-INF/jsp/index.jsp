@@ -6,18 +6,17 @@
 <head>
     <meta charset="UTF-8" />
     <title><spring:message code="title"/></title>
-    <link href="<c:url value="/css/main.css" />" rel="stylesheet">
-    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<c:url value="/main.css"/>" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="<c:url value="/js/app.js" />"></script>
+    <script src="<c:url value="/app.js"/>"></script>
 </head>
 <body>
 <div class="top">
     <div class="header">
         <div class="left">
-            <img src="<c:url value="/css/img/logo.png"/>" height="120" alt="label">
+            <img src="<c:url value="/img/logo.png"/>" height="120" alt="label">
         </div>
         <div class="right">
             <div class="right_l"><spring:message code="greeting"/></div>
@@ -62,7 +61,7 @@
                         <c:forEach  items="${filesAndIcons}" var ="entry">
                             <li class="file">
 								<span>
-									<img src="<c:url value="/css/img/${entry.value}"/>"/>
+									<img src="<c:url value="/img/${entry.value}"/>"/>
 									<a href="/?action=open_file&file_name=${entry.key}">${entry.key}</a>
 								</span>
                             </li>
@@ -173,11 +172,10 @@
                         <textarea id="editor" name="text">${text}</textarea>
                     </form>
 
-                    <h3>${curFile.absolutePath}
-                        <c:if test="${canWrite=='false'}">
-                            <i>[read only]</i>
-                        </c:if>
-                    </h3>
+                    <span id="filepath">${curFile.absolutePath}</span>
+                    <c:if test="${canWrite=='false'}">
+                        <i>[read only]</i>
+                    </c:if>
 
                 </div>
 

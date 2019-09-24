@@ -13,12 +13,15 @@ import java.nio.file.attribute.DosFileAttributes;
 
 class EditorUtils {
 
-    @SneakyThrows(IOException.class)
     static String getFileEncoding(File file) {
         UniversalDetector detector = new UniversalDetector(null);
-        byte[] bytes = FileUtils.readFileToByteArray(file);
-        detector.handleData(bytes, 0, bytes.length);
-        detector.dataEnd();
+        try {
+            byte[] bytes = FileUtils.readFileToByteArray(file);
+            detector.handleData(bytes, 0, bytes.length);
+            detector.dataEnd();
+        } catch (IOException e) {
+            System.out.println("Apache Commons IOException occurred!");
+        }
         return detector.getDetectedCharset();
     }
 

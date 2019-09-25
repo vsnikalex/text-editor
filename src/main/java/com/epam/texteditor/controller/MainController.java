@@ -69,7 +69,8 @@ public class MainController {
         }
 
         // Set document name and access
-        model.addAttribute("curFile", curFile);
+        model.addAttribute("filePath", curFile.getAbsolutePath());
+        model.addAttribute("filePathHashCode", curFile.getAbsolutePath().hashCode());
         model.addAttribute("canWrite", curFile.canWrite());
     }
 

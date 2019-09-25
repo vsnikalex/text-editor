@@ -10,6 +10,9 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script>
+        var hash = ${filePathHashCode};
+    </script>
     <script src="<c:url value="/app.js"/>"></script>
 </head>
 <body>
@@ -172,7 +175,7 @@
                         <textarea id="editor" name="text">${text}</textarea>
                     </form>
 
-                    <span id="filepath">${curFile.absolutePath}</span>
+                    <span id="filepath">${filePath}</span>
                     <c:if test="${canWrite=='false'}">
                         <i>[read only]</i>
                     </c:if>

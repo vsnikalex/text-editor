@@ -12,8 +12,11 @@ function connect() {
 }
 
 function sendText() {
-    stompClient.send("/app/text", {}, JSON.stringify({  'text': $("#editor").val(),
-                                                               'file' : document.getElementById('filepath').innerHTML }));
+    stompClient.send("/app/text/" + hash.toString(), {},
+                                                    JSON.stringify({
+                                                        'text': $("#editor").val(),
+                                                        'file' : document.getElementById('filepath').innerHTML
+                                                    }));
 }
 
 function showGreeting(message) {

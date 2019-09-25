@@ -4,7 +4,6 @@ import com.epam.texteditor.model.Note;
 import com.epam.texteditor.service.NoteService;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
-import org.mozilla.universalchardet.UniversalDetector;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -16,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.DosFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
 

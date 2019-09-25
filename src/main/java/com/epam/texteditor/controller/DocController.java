@@ -17,7 +17,7 @@ public class DocController {
     public Doc doc(Doc doc, @DestinationVariable String fileHash) {
         // Save to file system
         EditorUtils.updateOrCreateFile(new File(doc.getFile()), doc.getText());
-
+        // Send changes to listeners
         return doc;
     }
 

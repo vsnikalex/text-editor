@@ -39,11 +39,11 @@
 
             <div id="left">
                 <div id="file_navigation">
-                    <h4>/${curDir.name}
+                    <span>/${curDir.name}
                         <c:if test="${readOnly=='true'}">
-                            <i>[read only]</i>
+                            <i>[<spring:message code="read_only"/>]</i>
                         </c:if>
-                    </h4>
+                    </span>
                     <ul>
                         <c:if test="${isRoot=='false'}">
                             <li class="dir">
@@ -172,12 +172,19 @@
                         <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">
                             <spring:message code="new_file"/>
                         </button>
-                        <textarea id="editor" name="text">${text}</textarea>
+                        <c:choose>
+                            <c:when test="${canWrite=='false'}">
+                                <textarea id="editor" name="text" readonly>${text}</textarea>
+                            </c:when>
+                            <c:otherwise>
+                                <textarea id="editor" name="text">${text}</textarea>
+                            </c:otherwise>
+                        </c:choose>
                     </form>
 
                     <span id="filepath">${filePath}</span>
                     <c:if test="${canWrite=='false'}">
-                        <i>[read only]</i>
+                        <i>[<spring:message code="read_only"/>]</i>
                     </c:if>
 
                 </div>

@@ -20,7 +20,14 @@ function sendText() {
 }
 
 function showText(text) {
-    document.getElementById("editor").value = text;
+    var editor = document.getElementById("editor");
+
+    var position = editor.selectionStart;
+
+    editor.value = text;
+
+    editor.selectionStart = position;
+    editor.selectionEnd = position;
 }
 
 $(function () {

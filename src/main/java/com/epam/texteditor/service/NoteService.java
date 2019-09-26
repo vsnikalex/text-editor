@@ -4,13 +4,13 @@ import com.epam.texteditor.model.Note;
 
 import java.io.File;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Map;
 
 public interface NoteService {
 
     void saveNote(Note note);
 
-    List<Note> getNotesByFile(File file);
+    Map<String, List<Note>> getNotesByFileGroupByHeaderSortByDate(File file);
 
     void deleteNotesByFile(File file);
 

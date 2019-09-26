@@ -61,7 +61,7 @@ public class MainController {
             String text = FileUtils.readFileToString(curFile,  Charset.forName(encoding));
 
             model.addAttribute("text", text);
-            model.addAttribute("textNotes", noteService.getNotesByFile(curFile));
+            model.addAttribute("textNotes", noteService.getNotesByFileGroupByHeaderSortByDate(curFile));
         }
 
         // Set document name and access
@@ -95,7 +95,7 @@ public class MainController {
         model.addAttribute("readOnly", EditorUtils.isReadOnly(curDir));
 
         model.addAttribute("dirs", dirs);
-        model.addAttribute("dirNotes", noteService.getNotesByFile(curDir));
+        model.addAttribute("dirNotes", noteService.getNotesByFileGroupByHeaderSortByDate(curDir));
         model.addAttribute("filesAndIcons", filesAndIcons);
     }
 

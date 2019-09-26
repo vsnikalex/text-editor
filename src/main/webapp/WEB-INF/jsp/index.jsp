@@ -1,5 +1,4 @@
 ﻿<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
@@ -91,23 +90,21 @@
                 </div>
 
                 <div class="note_container">
-                    <c:forEach  items="${dirNotes}" var ="dir_note">
+
+                    <c:forEach items="${dirNotes}" var="entry">
+
                         <div id="dir_note">
-                            <h4>${dir_note.header}</h4>
-                            <p>${dir_note.content}</p>
-                            <p align="right">
-                                <i>${dir_note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
-                            </p>
+                            <h4>${entry.key}</h4>
 
                             <div class="target">
-                                <p>• v3 Hello, Dir!</p>
-                                <p>• v2 Hello, Dir</p>
-                                <p>• v1 Hello Dri</p>
-                                <p>• v0 Hello</p>
+                                <c:forEach items="${entry.value}" var="note">
+                                    <p>• ${note.content}</p>
+                                </c:forEach>
                             </div>
 
                         </div>
                     </c:forEach>
+
                 </div>
             </div>
 
@@ -151,28 +148,25 @@
 
                     <%--   HIDE/SHOW STORY   --%>
                     <div class="form-group">
-                        <label for="show_story">Storyline:</label>
-                        <button id="show_story" type="submit">show</button>
-                        <button id="hide_story" type="submit">hide</button>
+                        <label for="show_story"><spring:message code="storyline"/>: </label>
+                        <button id="show_story" type="submit"><spring:message code="show"/></button>
+                        <button id="hide_story" type="submit"><spring:message code="hide"/></button>
                     </div>
 
-                    <c:forEach  items="${textNotes}" var ="text_note">
+                    <c:forEach items="${textNotes}" var="entry">
+
                         <div id="text_note">
-                            <h4>${text_note.header}</h4>
-                            <p>${text_note.content}</p>
-                            <p align="right">
-                                <i>${text_note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
-                            </p>
+                            <h4>${entry.key}</h4>
 
                             <div class="target">
-                                <p>• v3 Hello, World!</p>
-                                <p>• v2 Hello, World</p>
-                                <p>• v1 Hello Wolrd</p>
-                                <p>• v0 Hello</p>
+                                <c:forEach items="${entry.value}" var="note">
+                                    <p>• ${note.content}</p>
+                                </c:forEach>
                             </div>
 
                         </div>
                     </c:forEach>
+
                 </div>
             </div>
 

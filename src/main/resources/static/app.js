@@ -30,6 +30,16 @@ function showText(text) {
     editor.selectionEnd = position;
 }
 
+function visibility (elements, vis) {
+    elements = elements.length ? elements : [elements];
+    for (var index = 0; index < elements.length; index++) {
+        elements[index].style.display = vis;
+    }
+}
+
 $(function () {
     document.getElementById("editor").oninput = function() { sendText(); };
+
+    $( "#hide_story" ).click(function() { visibility(document.querySelectorAll('.target'), 'none'); });
+    $( "#show_story" ).click(function() { visibility(document.querySelectorAll('.target'), 'inline'); });
 });

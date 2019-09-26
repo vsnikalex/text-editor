@@ -74,7 +74,7 @@
 
                 <div>
                     <form action="/" method="GET">
-                        <input name="dir_name" placeholder="Directory name..." />
+                        <input name="dir_name" placeholder="<spring:message code="directory_name"/>..." />
                         <p><select multiple name="dir_access" style="height:20px;width:165px;margin:3px">
                             <option selected value="read_write"><spring:message code="full_access"/></option>
                             <option value="read_only"><spring:message code="read_only"/></option>
@@ -98,6 +98,14 @@
                             <p align="right">
                                 <i>${dir_note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
                             </p>
+
+                            <div class="target">
+                                <p>• v3 Hello, Dir!</p>
+                                <p>• v2 Hello, Dir</p>
+                                <p>• v1 Hello Dri</p>
+                                <p>• v0 Hello</p>
+                            </div>
+
                         </div>
                     </c:forEach>
                 </div>
@@ -140,6 +148,14 @@
                     </form>
                 </div>
                 <div class="note_container">
+
+                    <%--   HIDE/SHOW STORY   --%>
+                    <div class="form-group">
+                        <label for="show_story">Storyline:</label>
+                        <button id="show_story" type="submit">show</button>
+                        <button id="hide_story" type="submit">hide</button>
+                    </div>
+
                     <c:forEach  items="${textNotes}" var ="text_note">
                         <div id="text_note">
                             <h4>${text_note.header}</h4>
@@ -147,6 +163,14 @@
                             <p align="right">
                                 <i>${text_note.modified.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</i>
                             </p>
+
+                            <div class="target">
+                                <p>• v3 Hello, World!</p>
+                                <p>• v2 Hello, World</p>
+                                <p>• v1 Hello Wolrd</p>
+                                <p>• v0 Hello</p>
+                            </div>
+
                         </div>
                     </c:forEach>
                 </div>
@@ -164,7 +188,7 @@
                     </div>
 
                     <form action="/" method="GET">
-                        <input name="file_name" id="file_name" placeholder="File name..."/>
+                        <input name="file_name" id="file_name" placeholder="<spring:message code="file_name"/>..."/>
                         <select multiple name="file_access" size="1" style="width:120px">
                             <option selected value="read_write"><spring:message code="full_access"/></option>
                             <option value="read_only"><spring:message code="read_only"/></option>

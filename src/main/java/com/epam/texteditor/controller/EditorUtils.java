@@ -15,7 +15,8 @@ import java.nio.file.attribute.DosFileAttributes;
 @Component
 class EditorUtils {
 
-     String getFileEncoding(File file) {
+    String getFileEncoding(File file) {
+        // Use before writing/reading
         UniversalDetector detector = new UniversalDetector(null);
         try {
             byte[] bytes = FileUtils.readFileToByteArray(file);
@@ -29,14 +30,14 @@ class EditorUtils {
 
     @SneakyThrows(IOException.class)
     void makeReadOnly(File file) {
-        // This method is required because file.setReadOnly() doesn't work for directory
+        // This method is required because java.io.File.setReadOnly() doesn't work for directory
         Path path = file.toPath();
         Files.setAttribute(path, "dos:readonly", true);
     }
 
     @SneakyThrows(IOException.class)
     boolean isReadOnly(File file) {
-        // This method is required because file.canWrite() always returns true for directory without SecurityManager
+        // This method is required because java.io.File.canWrite() always returns true for directory
         Path path = file.toPath();
         DosFileAttributes dfa = Files.readAttributes(path, DosFileAttributes.class);
         return dfa.isReadOnly();
@@ -45,7 +46,7 @@ class EditorUtils {
     @SneakyThrows(IOException.class)
     void updateOrCreateFile(File file, String changes) {
         // If file exists and writable or new
-        if (!file.isDirectory() && file.canWrite() || !file.exists()) {
+        if (!file.isDirectory() && ( file.canWrite() || !file.exists() )) {
             String encoding = getFileEncoding(file);
             if (encoding == null) {
                 encoding = "UTF-8";
@@ -57,6 +58,7 @@ class EditorUtils {
 
     @SneakyThrows(IOException.class)
     String readFile(File file) {
+        // Read considering encoding
         String encoding = this.getFileEncoding(file);
         if (encoding == null) {
             encoding = "UTF-8";
@@ -64,4 +66,5 @@ class EditorUtils {
 
         return FileUtils.readFileToString(file,  Charset.forName(encoding));
     }
+
 }

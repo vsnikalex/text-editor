@@ -1,7 +1,6 @@
 package com.epam.texteditor.controller;
 
 import com.epam.texteditor.model.Doc;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;

@@ -39,13 +39,12 @@ public class MainController {
     }
 
     private void setDocAndNotes(Model model, HttpSession session) {
-        File curFile = (File)session.getAttribute("curFile");
-
         // Scope: file editor, file notes
+        File curFile = (File)session.getAttribute("curFile");
 
         // curFile is a directory after opening the app (curFile is root directory by default)
         // and after deleting a file (curFile will be set to curDir)
-        // after deleting from OS, it will not exist
+        // it won't exist after deleting from OS manually
         if (!curFile.exists() || curFile.isDirectory()) {
             if (!curFile.exists()) { session.setAttribute("curFile", curFile.getParentFile()); }
             model.addAttribute("text", "");
@@ -63,9 +62,9 @@ public class MainController {
     }
 
     private void setDirsAndFiles(Model model, HttpSession session) {
+        // Scope: file browser, directory notes
         File curDir = (File)session.getAttribute("curDir");
 
-        // Scope: file browser, directory notes
         File[] dirs = curDir.listFiles(File::isDirectory);
 
         // Chose file ico via XML configuration depending on extension

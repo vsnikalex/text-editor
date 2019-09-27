@@ -6,7 +6,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableScheduling
 @ImportResource("classpath:app-config.xml")
 public class XmlConfig implements WebMvcConfigurer {
 

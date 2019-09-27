@@ -45,12 +45,13 @@ public class MainController {
 
         // curFile is a directory after opening the app (curFile is root directory by default)
         // and after deleting a file (curFile will be set to curDir)
-        if (curFile.isDirectory()) {
+        // after deleting from OS, it will not exist
+        if (!curFile.exists() || curFile.isDirectory()) {
+            if (!curFile.exists()) { session.setAttribute("curFile", curFile.getParentFile()); }
             model.addAttribute("text", "");
             model.addAttribute("curFileIsDir", true);
         } else {
             String text = editorUtils.readFile(curFile);
-
             model.addAttribute("text", text);
             model.addAttribute("textNotes", noteService.getNotesByFileGroupByHeaderSortByDate(curFile));
         }

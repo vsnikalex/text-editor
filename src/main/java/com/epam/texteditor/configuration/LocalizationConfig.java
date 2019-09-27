@@ -15,7 +15,7 @@ public class LocalizationConfig implements WebMvcConfigurer {
 
     @Bean
     public LocaleResolver localeResolver() {
-        // In order for our application to be able to determine which locale is currently being used
+        // To determine which locale is currently being used
         SessionLocaleResolver slr = new SessionLocaleResolver();
         slr.setDefaultLocale(Locale.US);
         return slr;

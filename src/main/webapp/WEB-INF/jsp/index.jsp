@@ -203,14 +203,29 @@
                     </form>
 
                     <!--   FILE PREVIEWS   --->
-                    <textarea id="preview" readonly hidden>Preview 1</textarea>
+                    <textarea id="preview" readonly hidden></textarea>
+                    <span id="dirpath" hidden><%=((File)session.getAttribute("curDir")).getAbsolutePath()%></span>
                     <script>
+                        stompClient.connect({}, function () {
+                            stompClient.subscribe('/topic/files', function (text) {
+                                prev(text.body);
+                            });
+                        });
+
+                        function prev(text) {
+                            var p = document.getElementById("preview");
+                            p.value = text;
+                        }
+
                         var fnames = document.querySelectorAll('.fname');
                         fnames.forEach(function(fn){
                             var prev = document.getElementById("preview");
 
                             fn.addEventListener('mouseenter', function() {
-                                prev.value = fn.innerHTML;
+                                var filepath = document.getElementById("dirpath").innerHTML+ "\\" + fn.innerHTML;
+
+                                stompClient.send("/app/text", {}, filepath);
+
                                 prev.style.display = 'inline';
                             });
 
@@ -220,7 +235,6 @@
                         });
                     </script>
 
-<%--                    <span id="filepath">${filePath}</span>--%>
                     <span id="filepath"><%=((File)session.getAttribute("curFile")).getAbsolutePath()%></span>
                     <c:if test="${canWrite=='false'}">
                         <i>[<spring:message code="read_only"/>]</i>

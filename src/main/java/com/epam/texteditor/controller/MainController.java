@@ -38,7 +38,6 @@ public class MainController {
         this.editorUtils.makeReadOnly(root);
     }
 
-    @SneakyThrows(IOException.class)
     private void setDocAndNotes(Model model, HttpSession session) {
         File curFile = (File)session.getAttribute("curFile");
 
@@ -50,12 +49,7 @@ public class MainController {
             model.addAttribute("text", "");
             model.addAttribute("curFileIsDir", true);
         } else {
-            String encoding = editorUtils.getFileEncoding(curFile);
-            if (encoding == null) {
-                encoding = "UTF-8";
-            }
-
-            String text = FileUtils.readFileToString(curFile,  Charset.forName(encoding));
+            String text = editorUtils.readFile(curFile);
 
             model.addAttribute("text", text);
             model.addAttribute("textNotes", noteService.getNotesByFileGroupByHeaderSortByDate(curFile));

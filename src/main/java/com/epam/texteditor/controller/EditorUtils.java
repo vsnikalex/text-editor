@@ -55,4 +55,13 @@ class EditorUtils {
         }
     }
 
+    @SneakyThrows(IOException.class)
+    String readFile(File file) {
+        String encoding = this.getFileEncoding(file);
+        if (encoding == null) {
+            encoding = "UTF-8";
+        }
+
+        return FileUtils.readFileToString(file,  Charset.forName(encoding));
+    }
 }

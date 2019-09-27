@@ -3,6 +3,7 @@ package com.epam.texteditor.controller;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.mozilla.universalchardet.UniversalDetector;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,9 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributes;
 
+@Component
 class EditorUtils {
 
-    static String getFileEncoding(File file) {
+     String getFileEncoding(File file) {
         UniversalDetector detector = new UniversalDetector(null);
         try {
             byte[] bytes = FileUtils.readFileToByteArray(file);
@@ -26,14 +28,14 @@ class EditorUtils {
     }
 
     @SneakyThrows(IOException.class)
-    static void makeReadOnly(File file) {
+    void makeReadOnly(File file) {
         // This method is required because file.setReadOnly() doesn't work for directory
         Path path = file.toPath();
         Files.setAttribute(path, "dos:readonly", true);
     }
 
     @SneakyThrows(IOException.class)
-    static boolean isReadOnly(File file) {
+    boolean isReadOnly(File file) {
         // This method is required because file.canWrite() always returns true for directory without SecurityManager
         Path path = file.toPath();
         DosFileAttributes dfa = Files.readAttributes(path, DosFileAttributes.class);
@@ -41,7 +43,7 @@ class EditorUtils {
     }
 
     @SneakyThrows(IOException.class)
-    static void updateOrCreateFile(File file, String changes) {
+    void updateOrCreateFile(File file, String changes) {
         // If file exists and writable or new
         if (!file.isDirectory() && file.canWrite() || !file.exists()) {
             String encoding = getFileEncoding(file);

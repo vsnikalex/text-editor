@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -24,27 +25,23 @@ public class MainController {
 
     private final NoteService noteService;
     private final ApplicationContext context;
+    private final EditorUtils editorUtils;
 
     private File root;
-    // Scope: directory-file browser, directory notes
-    private File curDir;
-    // Scope: file editor, file notes
-    private File curFile;
 
-    public MainController(ConfigurableApplicationContext context, NoteService noteService) {
+    public MainController(ConfigurableApplicationContext context, NoteService noteService, EditorUtils editorUtils) {
         this.context = context;
-
-        // At start, application focuses on root directory
-        root = (File) context.getBean("root");
-        EditorUtils.makeReadOnly(root);
-        curDir = root;
-        curFile = curDir;
-
         this.noteService = noteService;
+        this.editorUtils = editorUtils;
+
+        root = (File) context.getBean("root");
+        this.editorUtils.makeReadOnly(root);
     }
 
     @SneakyThrows(IOException.class)
-    private void setDocAndNotes(Model model) {
+    private void setDocAndNotes(Model model, HttpSession session) {
+        File curFile = (File)session.getAttribute("curFile");
+
         // Scope: file editor, file notes
 
         // curFile is a directory after opening the app (curFile is root directory by default)
@@ -53,7 +50,7 @@ public class MainController {
             model.addAttribute("text", "");
             model.addAttribute("curFileIsDir", true);
         } else {
-            String encoding = EditorUtils.getFileEncoding(curFile);
+            String encoding = editorUtils.getFileEncoding(curFile);
             if (encoding == null) {
                 encoding = "UTF-8";
             }
@@ -70,7 +67,9 @@ public class MainController {
         model.addAttribute("canWrite", curFile.canWrite());
     }
 
-    private void setDirsAndFiles(Model model) {
+    private void setDirsAndFiles(Model model, HttpSession session) {
+        File curDir = (File)session.getAttribute("curDir");
+
         // Scope: file browser, directory notes
         File[] dirs = curDir.listFiles(File::isDirectory);
 
@@ -91,8 +90,9 @@ public class MainController {
         }
 
         model.addAttribute("isRoot", curDir.equals(root));
-        model.addAttribute("curDir", curDir);
-        model.addAttribute("readOnly", EditorUtils.isReadOnly(curDir));
+        model.addAttribute("curDirName", curDir.getName());
+        model.addAttribute("curDirPath", curDir.getAbsolutePath());
+        model.addAttribute("readOnly", editorUtils.isReadOnly(curDir));
 
         model.addAttribute("dirs", dirs);
         model.addAttribute("dirNotes", noteService.getNotesByFileGroupByHeaderSortByDate(curDir));
@@ -100,7 +100,7 @@ public class MainController {
     }
 
     private boolean removeDirOrFile(File file) {
-        if (EditorUtils.isReadOnly(file)) { return false; }
+        if (editorUtils.isReadOnly(file)) { return false; }
 
         noteService.deleteNotesByFile(file);
         return FileUtils.deleteQuietly(file);
@@ -108,7 +108,8 @@ public class MainController {
 
     @GetMapping("/")
     @SneakyThrows
-    public String indexGet(Model model,     @RequestParam(value="action", required = false) String action,
+    public String indexGet(Model model, HttpSession session,
+                                            @RequestParam(value="action", required = false) String action,
 
                                             @RequestParam(value="file_name", required=false) String fileName,
                                             @RequestParam(value="file_access", required = false) String fileAccess,
@@ -117,67 +118,81 @@ public class MainController {
                                             @RequestParam(value="dir_name", required = false) String dirName,
                                             @RequestParam(value="dir_access", required = false) String dirAccess) {
 
-        if (action != null)
-        switch (action) {
-            case "new_file":
-                curFile = new File(curDir, fileName);
-                EditorUtils.updateOrCreateFile(curFile, text);
-                if ("read_only".equals(fileAccess)) {
-                    EditorUtils.makeReadOnly(curFile);
-                }
-                break;
-            case "open_file":
-                curFile = new File(curDir, fileName);
-                break;
-            case "rm_file":
-                if (removeDirOrFile(curFile)) {
-                    curFile = curDir;
-                }
-                break;
-            case "new_dir":
-                File newDir = new File(curDir.getAbsolutePath(), dirName);
-                if (!newDir.exists()) {
-                    newDir.mkdir();
-                    if ("read_only".equals(dirAccess)) {
-                        EditorUtils.makeReadOnly(newDir);
-                    }
-                }
-                break;
-            case "open_dir":
-                curDir = new File(curDir, dirName);
-                break;
-            case "go_back":
-                curDir = new File(curDir.getParent());
-                break;
-            case "rm_dir":
-                if (removeDirOrFile(curDir)) {
-                    curDir = curDir.getParentFile();
-                }
-                break;
+        // Default values
+        if (session.isNew()) {
+            // Scope: directory-file browser, directory notes
+            session.setAttribute("curDir", root);
+            // Scope: file editor, file notes
+            session.setAttribute("curFile", root);
         }
 
-        setDocAndNotes(model);
-        setDirsAndFiles(model);
+        // Actual values
+        File curDir = (File)session.getAttribute("curDir");
+        File curFile = (File)session.getAttribute("curFile");
+
+        if (action != null)
+            switch (action) {
+                case "new_file":
+                    session.setAttribute("curFile", new File(curDir, fileName));
+                    curFile = (File) session.getAttribute("curFile");
+                    editorUtils.updateOrCreateFile(curFile, text);
+                    if ("read_only".equals(fileAccess)) {
+                        editorUtils.makeReadOnly(curFile);
+                    }
+                    break;
+                case "open_file":
+                    session.setAttribute("curFile", new File(curDir, fileName));
+                    break;
+                case "rm_file":
+                    if (removeDirOrFile(curFile)) {
+                        session.setAttribute("curFile", curDir);
+                    }
+                    break;
+                case "new_dir":
+                    File newDir = new File(curDir.getAbsolutePath(), dirName);
+                    if (!newDir.exists()) {
+                        newDir.mkdir();
+                        if ("read_only".equals(dirAccess)) {
+                            editorUtils.makeReadOnly(newDir);
+                        }
+                    }
+                    break;
+                case "open_dir":
+                    session.setAttribute("curDir", new File(curDir, dirName));
+                    break;
+                case "go_back":
+                    session.setAttribute("curDir", curDir.getParentFile());
+                    break;
+                case "rm_dir":
+                    if (removeDirOrFile(curDir)) {
+                        session.setAttribute("curDir", curDir.getParentFile());
+                    }
+                    break;
+            }
+
+        setDocAndNotes(model, session);
+        setDirsAndFiles(model, session);
 
         return "index";
     }
 
     @PostMapping("/")
-    public String indexPost(Model model, @RequestParam(value="note_name") String noteName,
+    public String indexPost(Model model, HttpSession session,
+                                            @RequestParam(value="note_name") String noteName,
                                             @RequestParam(value="note_text") String noteText,
                                             @RequestParam(value="note_type") String noteType) {
 
         switch (noteType) {
             case "text_note":
-                noteService.saveNote(new Note(noteName, noteText, curFile));
+                noteService.saveNote(new Note(noteName, noteText, (File) session.getAttribute("curFile")));
                 break;
             case "dir_note":
-                noteService.saveNote(new Note(noteName, noteText, curDir));
+                noteService.saveNote(new Note(noteName, noteText, (File) session.getAttribute("curDir")));
                 break;
         }
 
-        setDocAndNotes(model);
-        setDirsAndFiles(model);
+        setDocAndNotes(model, session);
+        setDirsAndFiles(model, session);
 
         return "index";
     }

@@ -1,4 +1,5 @@
-﻿<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+﻿<%@ page import="java.io.File" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
@@ -38,7 +39,7 @@
 
             <div id="left">
                 <div id="file_navigation">
-                    <span>/${curDir.name}
+                    <span>/${curDirName}
                         <c:if test="${readOnly=='true'}">
                             <i>[<spring:message code="read_only"/>]</i>
                         </c:if>
@@ -219,7 +220,8 @@
                         });
                     </script>
 
-                    <span id="filepath">${filePath}</span>
+<%--                    <span id="filepath">${filePath}</span>--%>
+                    <span id="filepath"><%=((File)session.getAttribute("curFile")).getAbsolutePath()%></span>
                     <c:if test="${canWrite=='false'}">
                         <i>[<spring:message code="read_only"/>]</i>
                     </c:if>

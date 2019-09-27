@@ -64,7 +64,7 @@
                             <li class="file">
 								<span>
 									<img src="<c:url value="/img/${entry.value}"/>"/>
-									<a href="/?action=open_file&file_name=${entry.key}">${entry.key}</a>
+                                    <a class="fname" href="/?action=open_file&file_name=${entry.key}">${entry.key}</a>
 								</span>
                             </li>
                         </c:forEach>
@@ -198,7 +198,26 @@
                                 <textarea id="editor" name="text">${text}</textarea>
                             </c:otherwise>
                         </c:choose>
+
                     </form>
+
+                    <!--   FILE PREVIEWS   --->
+                    <textarea id="preview" readonly hidden>Preview 1</textarea>
+                    <script>
+                        var fnames = document.querySelectorAll('.fname');
+                        fnames.forEach(function(fn){
+                            var prev = document.getElementById("preview");
+
+                            fn.addEventListener('mouseenter', function() {
+                                prev.value = fn.innerHTML;
+                                prev.style.display = 'inline';
+                            });
+
+                            fn.addEventListener('mouseleave', function() {
+                                prev.style.display = 'none';
+                            });
+                        });
+                    </script>
 
                     <span id="filepath">${filePath}</span>
                     <c:if test="${canWrite=='false'}">

@@ -139,4 +139,13 @@ h1,h2,h3 {padding-top:6px}
     background-color:skyblue;
 }
 
-/* STORYLINE */
+/* PREVIEW */
+#preview {
+    background-color: lightcoral;
+    position: absolute;
+    top: 300px;
+    right: 410px;
+    resize: none;
+    width: 470px;
+    height: 350px;
+}

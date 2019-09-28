@@ -19,10 +19,19 @@
 <div class="top">
     <div class="header">
         <div class="left">
-            <img src="<c:url value="/img/logo.png"/>" height="120" alt="label">
+            <div class="left_l">
+                <img src="<c:url value="/img/logo.png"/>" height="120" alt="label">
+            </div>
+            <div class="left_r">
+                <div class="right_l"><spring:message code="greeting"/></div>
+            </div>
         </div>
         <div class="right">
-            <div class="right_l"><spring:message code="greeting"/></div>
+            <div class="right_l">
+                <a href="<c:url value='uploadForm.html' />">
+                    <spring:message code="upload_file"/>
+                </a>
+            </div>
             <div class="right_r">
                 <span><spring:message code="lang.change"/></span>
                 <a href="/?lang=en">EN</a> | <a href="/?lang=de">DE</a>

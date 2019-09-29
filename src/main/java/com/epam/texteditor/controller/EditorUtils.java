@@ -15,6 +15,11 @@ import java.nio.file.attribute.DosFileAttributes;
 @Component
 class EditorUtils {
 
+    String extension(String fName) {
+        int i = fName.lastIndexOf(".");
+        return (i == -1) ? "default" : fName.substring(i);
+    }
+
     String getFileEncoding(File file) {
         // Use before writing/reading
         UniversalDetector detector = new UniversalDetector(null);

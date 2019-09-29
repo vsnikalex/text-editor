@@ -26,6 +26,7 @@ public class MainController {
     private final EditorUtils editorUtils;
 
     private File root;
+    private Map<String, String> supported;
 
     public MainController(ConfigurableApplicationContext context, NoteService noteService, EditorUtils editorUtils) {
         this.context = context;
@@ -34,11 +35,14 @@ public class MainController {
 
         root = (File) context.getBean("root");
         this.editorUtils.makeReadOnly(root);
+
+        supported = (HashMap<String, String>) context.getBean("supportedFilesAndIcons");
     }
 
     private void setDocAndNotes(Model model, HttpSession session) {
         // Scope: file editor, file notes
         File curFile = (File)session.getAttribute("curFile");
+        Map<String, String> supportedFiles = supported;
 
         // curFile is a directory after opening the app (curFile is root directory by default)
         // and after deleting a file (curFile will be set to curDir)
@@ -48,8 +52,16 @@ public class MainController {
             model.addAttribute("text", "");
             model.addAttribute("curFileIsDir", true);
         } else {
-            String text = editorUtils.readFile(curFile);
-            model.addAttribute("text", text);
+            String extension = editorUtils.extension(curFile.getName());
+
+            // Check compatibility with file editor
+            if (!"default".equals(extension) && supportedFiles.containsKey(extension)) {
+                String text = editorUtils.readFile(curFile);
+                model.addAttribute("text", text);
+            } else {
+                model.addAttribute("text", "FILE EXTENSION IS NOT SUPPORTED BY EDITOR");
+            }
+
             model.addAttribute("textNotes", noteService.getNotesByFileGroupByHeaderSortByDate(curFile));
         }
 
@@ -67,15 +79,14 @@ public class MainController {
 
         // Chose file ico via XML configuration depending on extension
         File[] files = curDir.listFiles(File::isFile);
-        Map<String, String> icons = (HashMap<String, String>) context.getBean("icons");
+        Map<String, String> icons = supported;
 
         Map<String, String> filesAndIcons = new HashMap<>();
         for (File f : files) {
             String fName = f.getName();
 
             // if file is without extension or there is not appropriate icon, use default one
-            int i = fName.lastIndexOf(".");
-            String extension = (i == -1) ? "default" : fName.substring(i);
+            String extension = editorUtils.extension(fName);
             String img = icons.containsKey(extension) ? icons.get(extension) : icons.get("default");
 
             filesAndIcons.put(fName, img);

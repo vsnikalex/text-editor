@@ -15,7 +15,7 @@
         <constructor-arg value="C:\EPAM"/>
     </bean>
 
-    <util:map id="icons" map-class="java.util.HashMap" key-type="java.lang.String" value-type="java.lang.String">
+    <util:map id="supportedFilesAndIcons" map-class="java.util.HashMap" key-type="java.lang.String" value-type="java.lang.String">
         <entry key=".txt" value="txt.png"/>
         <entry key=".java" value="java.png"/>
         <entry key="default" value="binary.png"/>

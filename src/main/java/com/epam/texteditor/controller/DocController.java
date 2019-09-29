@@ -32,6 +32,12 @@ public class DocController {
     @MessageMapping("/text")
     @SendTo("/topic/files")
     public String text(String filePath) {
+        return editorUtils.checkAndReadFile(new File(filePath));
+    }
+
+    @MessageMapping("/download")
+    @SendTo("/topic/downloads")
+    public String download(String filePath) {
         return editorUtils.readFile(new File(filePath));
     }
 

@@ -3,6 +3,8 @@ package com.epam.texteditor.controller;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.mozilla.universalchardet.UniversalDetector;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -11,13 +13,26 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributes;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 class EditorUtils {
 
+    private final ApplicationContext context;
+
+    EditorUtils(ApplicationContext context) {
+        this.context = context;
+    }
+
     String extension(String fName) {
         int i = fName.lastIndexOf(".");
         return (i == -1) ? "default" : fName.substring(i);
+    }
+
+    boolean supported(String extension) {
+        Map<String, String> supportedFiles = (HashMap<String, String>) context.getBean("supportedFilesAndIcons");
+        return !"default".equals(extension) && supportedFiles.containsKey(extension);
     }
 
     String getFileEncoding(File file) {
@@ -59,6 +74,16 @@ class EditorUtils {
 
             FileUtils.writeStringToFile(file, changes, Charset.forName(encoding));
         }
+    }
+
+    String checkAndReadFile(File file) {
+        String extension = extension(file.getName());
+
+        if (!supported(extension)) {
+            return "FILE EXTENSION IS NOT SUPPORTED BY EDITOR";
+        }
+
+        return readFile(file);
     }
 
     @SneakyThrows(IOException.class)

@@ -13,7 +13,7 @@
     <script>
         var hash = ${filePathHashCode};
     </script>
-    <script src="<c:url value="/app.js"/>"></script>
+    <script src="<c:url value="/autosave.js"/>"></script>
 </head>
 <body>
 <div class="top">
@@ -202,6 +202,7 @@
                         </button>
                         <!--   DOWNLOAD FILE   --->
                         <span id="curFile" hidden><%=((File)session.getAttribute("curFile")).getName()%></span>
+                        <span id="dirpath" hidden><%=((File)session.getAttribute("curDir")).getAbsolutePath()%></span>
                         <input type="button" class="small_button" id="dwn-btn" value="<spring:message code="download"/>"/>
                         <c:choose>
                             <c:when test="${canWrite=='false'}">
@@ -211,63 +212,12 @@
                                 <textarea id="editor" name="text">${text}</textarea>
                             </c:otherwise>
                         </c:choose>
-                        <script>
-                            function download(filename, text) {
-                                var element = document.createElement('a');
-                                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-                                element.setAttribute('download', filename);
-
-                                element.style.display = 'none';
-                                document.body.appendChild(element);
-
-                                element.click();
-
-                                document.body.removeChild(element);
-                            }
-
-                            // Start file download.
-                            document.getElementById("dwn-btn").addEventListener("click", function(){
-                                // Generate download of hello.txt file with some content
-                                var text = document.getElementById("editor").value;
-                                var filename = document.getElementById("curFile").innerHTML;
-
-                                download(filename, text);
-                            }, false);
-                        </script>
+                        <script src="<c:url value="/download.js"/>"></script>
                     </form>
 
                     <!--   FILE PREVIEWS   --->
                     <textarea id="preview" readonly hidden></textarea>
-                    <span id="dirpath" hidden><%=((File)session.getAttribute("curDir")).getAbsolutePath()%></span>
-                    <script>
-                        stompClient.connect({}, function () {
-                            stompClient.subscribe('/topic/files', function (text) {
-                                prev(text.body);
-                            });
-                        });
-
-                        function prev(text) {
-                            var p = document.getElementById("preview");
-                            p.value = text;
-                        }
-
-                        var fnames = document.querySelectorAll('.fname');
-                        fnames.forEach(function(fn){
-                            var prev = document.getElementById("preview");
-
-                            fn.addEventListener('mouseenter', function() {
-                                var filepath = document.getElementById("dirpath").innerHTML + "\\" + fn.innerHTML;
-
-                                stompClient.send("/app/text", {}, filepath);
-
-                                prev.style.display = 'inline';
-                            });
-
-                            fn.addEventListener('mouseleave', function() {
-                                prev.style.display = 'none';
-                            });
-                        });
-                    </script>
+                    <script src="<c:url value="/preview.js"/>"></script>
 
                     <span id="filepath"><%=((File)session.getAttribute("curFile")).getAbsolutePath()%></span>
                     <c:if test="${canWrite=='false'}">

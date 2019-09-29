@@ -42,7 +42,6 @@ public class MainController {
     private void setDocAndNotes(Model model, HttpSession session) {
         // Scope: file editor, file notes
         File curFile = (File)session.getAttribute("curFile");
-        Map<String, String> supportedFiles = supported;
 
         // curFile is a directory after opening the app (curFile is root directory by default)
         // and after deleting a file (curFile will be set to curDir)
@@ -52,15 +51,8 @@ public class MainController {
             model.addAttribute("text", "");
             model.addAttribute("curFileIsDir", true);
         } else {
-            String extension = editorUtils.extension(curFile.getName());
-
-            // Check compatibility with file editor
-            if (!"default".equals(extension) && supportedFiles.containsKey(extension)) {
-                String text = editorUtils.readFile(curFile);
-                model.addAttribute("text", text);
-            } else {
-                model.addAttribute("text", "FILE EXTENSION IS NOT SUPPORTED BY EDITOR");
-            }
+            String text = editorUtils.checkAndReadFile(curFile);
+            model.addAttribute("text", text);
 
             model.addAttribute("textNotes", noteService.getNotesByFileGroupByHeaderSortByDate(curFile));
         }

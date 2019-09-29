@@ -15,6 +15,10 @@
         <constructor-arg value="C:\EPAM"/>
     </bean>
 
+    <bean id="upload" class="java.io.File" >
+        <constructor-arg value="C:\EPAM\upload"/>
+    </bean>
+
     <util:map id="supportedFilesAndIcons" map-class="java.util.HashMap" key-type="java.lang.String" value-type="java.lang.String">
         <entry key=".txt" value="txt.png"/>
         <entry key=".java" value="java.png"/>

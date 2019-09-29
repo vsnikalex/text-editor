@@ -2,15 +2,12 @@ package com.epam.texteditor.controller;
 
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.mozilla.universalchardet.UniversalDetector;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-class EditorUtils {
+public class EditorUtils {
 
     private final ApplicationContext context;
 
@@ -27,17 +24,17 @@ class EditorUtils {
         this.context = context;
     }
 
-    String extension(String fName) {
+    public String extension(String fName) {
         int i = fName.lastIndexOf(".");
         return (i == -1) ? "default" : fName.substring(i);
     }
 
-    boolean supported(String extension) {
+    public boolean supported(String extension) {
         Map<String, String> supportedFiles = (HashMap<String, String>) context.getBean("supportedFilesAndIcons");
         return !"default".equals(extension) && supportedFiles.containsKey(extension);
     }
 
-    String getFileEncoding(File file) {
+    public String getFileEncoding(File file) {
         // Use before writing/reading
         UniversalDetector detector = new UniversalDetector(null);
         try {
@@ -51,14 +48,14 @@ class EditorUtils {
     }
 
     @SneakyThrows(IOException.class)
-    void makeReadOnly(File file) {
+    public void makeReadOnly(File file) {
         // This method is required because java.io.File.setReadOnly() doesn't work for directory
         Path path = file.toPath();
         Files.setAttribute(path, "dos:readonly", true);
     }
 
     @SneakyThrows(IOException.class)
-    boolean isReadOnly(File file) {
+    public boolean isReadOnly(File file) {
         // This method is required because java.io.File.canWrite() always returns true for directory
         Path path = file.toPath();
         DosFileAttributes dfa = Files.readAttributes(path, DosFileAttributes.class);
@@ -66,7 +63,7 @@ class EditorUtils {
     }
 
     @SneakyThrows(IOException.class)
-    void updateOrCreateFile(File file, String changes) {
+    public void updateOrCreateFile(File file, String changes) {
         // If file exists and writable or new
         if (!file.isDirectory() && ( file.canWrite() || !file.exists() )) {
             String encoding = getFileEncoding(file);
@@ -78,7 +75,7 @@ class EditorUtils {
         }
     }
 
-    String checkCompatibilityAndRead(File file) {
+    public String checkCompatibilityAndRead(File file) {
         String extension = extension(file.getName());
 
         if (!supported(extension)) {
@@ -89,7 +86,7 @@ class EditorUtils {
     }
 
     @SneakyThrows(IOException.class)
-    String checkEncodingAndRead(File file) {
+    public String checkEncodingAndRead(File file) {
         // Read considering encoding
         String encoding = this.getFileEncoding(file);
         if (encoding == null) {

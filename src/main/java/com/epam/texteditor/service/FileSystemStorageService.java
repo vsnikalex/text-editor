@@ -1,10 +1,10 @@
 package com.epam.texteditor.service;
 
+import com.epam.texteditor.controller.EditorUtils;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,15 +15,15 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.stream.Stream;
 
 @Service
 public class FileSystemStorageService implements StorageService {
 
     private final Path uploadDir;
 
-    public FileSystemStorageService(ConfigurableApplicationContext context) {
-        File dir = new File((File) context.getBean("root"), "/upload");
+    public FileSystemStorageService(ConfigurableApplicationContext context, EditorUtils editorUtils) {
+        File dir = (File) context.getBean("upload");
+        editorUtils.makeReadOnly(dir);
         this.uploadDir = dir.toPath();
     }
 
@@ -51,19 +51,6 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public Stream<Path> loadAll() {
-        try {
-            return Files.walk(this.uploadDir, 1)
-                    .filter(path -> !path.equals(this.uploadDir))
-                    .map(this.uploadDir::relativize);
-        }
-        catch (IOException e) {
-            throw new StorageException("Failed to read stored files", e);
-        }
-
-    }
-
-    @Override
     public Path load(String filename) {
         return uploadDir.resolve(filename);
     }
@@ -84,21 +71,6 @@ public class FileSystemStorageService implements StorageService {
         }
         catch (MalformedURLException e) {
             throw new StorageFileNotFoundException("Could not read file: " + filename, e);
-        }
-    }
-
-    @Override
-    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(uploadDir.toFile());
-    }
-
-    @Override
-    public void init() {
-        try {
-            Files.createDirectories(uploadDir);
-        }
-        catch (IOException e) {
-            throw new StorageException("Could not initialize storage", e);
         }
     }
 

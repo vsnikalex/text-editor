@@ -73,7 +73,7 @@
                         <c:forEach  items="${filesAndIcons}" var ="entry">
                             <li class="file">
 								<span>
-									<img src="<c:url value="/img/${entry.value}"/>"/>
+                                    <img src="<c:url value="/img/${entry.value}"/>"/>
                                     <a class="fname" href="/?action=open_file&file_name=${entry.key}">${entry.key}</a>
 								</span>
                             </li>
@@ -88,12 +88,12 @@
                             <option selected value="read_write"><spring:message code="full_access"/></option>
                             <option value="read_only"><spring:message code="read_only"/></option>
                         </select></p>
-                        <button style="height:20px;width:165px;margin:3px" type="submit" name="action" value="new_dir">
+                        <button style="width: 170px" type="submit" name="action" value="new_dir">
                             <spring:message code="new_directory"/>
                         </button>
                     </form>
                     <form action="/" method="GET">
-                        <button style="height:20px;width:165px;margin:3px" type="submit" name="action" value="rm_dir">
+                        <button style="width: 170px" type="submit" name="action" value="rm_dir">
                             <spring:message code="delete_directory"/>
                         </button>
                     </form>
@@ -147,7 +147,7 @@
                                 <textarea id="note_text" name="note_text" ></textarea>
                             </li>
                             <li>
-                                <button style="height:25px;width:160px" class="submit" type="submit">
+                                <button class="submit" type="submit">
                                     <spring:message code="save_note"/>
                                 </button>
                             </li>
@@ -193,13 +193,16 @@
 
                     <form action="/" method="GET">
                         <input name="file_name" id="file_name" placeholder="<spring:message code="file_name"/>..."/>
-                        <select multiple name="file_access" size="1" style="width:120px">
+                        <select multiple name="file_access" size="1" style="width:120px;margin-top: 10px">
                             <option selected value="read_write"><spring:message code="full_access"/></option>
                             <option value="read_only"><spring:message code="read_only"/></option>
                         </select>
-                        <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="new_file">
+                        <button class="small_button" type="submit" name="action" value="new_file">
                             <spring:message code="new_file"/>
                         </button>
+                        <!--   DOWNLOAD FILE   --->
+                        <span id="curFile" hidden><%=((File)session.getAttribute("curFile")).getName()%></span>
+                        <input type="button" class="small_button" id="dwn-btn" value="<spring:message code="download"/>"/>
                         <c:choose>
                             <c:when test="${canWrite=='false'}">
                                 <textarea id="editor" name="text" readonly>${text}</textarea>
@@ -208,7 +211,29 @@
                                 <textarea id="editor" name="text">${text}</textarea>
                             </c:otherwise>
                         </c:choose>
+                        <script>
+                            function download(filename, text) {
+                                var element = document.createElement('a');
+                                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                                element.setAttribute('download', filename);
 
+                                element.style.display = 'none';
+                                document.body.appendChild(element);
+
+                                element.click();
+
+                                document.body.removeChild(element);
+                            }
+
+                            // Start file download.
+                            document.getElementById("dwn-btn").addEventListener("click", function(){
+                                // Generate download of hello.txt file with some content
+                                var text = document.getElementById("editor").value;
+                                var filename = document.getElementById("curFile").innerHTML;
+
+                                download(filename, text);
+                            }, false);
+                        </script>
                     </form>
 
                     <!--   FILE PREVIEWS   --->
@@ -231,7 +256,7 @@
                             var prev = document.getElementById("preview");
 
                             fn.addEventListener('mouseenter', function() {
-                                var filepath = document.getElementById("dirpath").innerHTML+ "\\" + fn.innerHTML;
+                                var filepath = document.getElementById("dirpath").innerHTML + "\\" + fn.innerHTML;
 
                                 stompClient.send("/app/text", {}, filepath);
 

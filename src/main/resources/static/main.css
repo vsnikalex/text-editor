@@ -10,6 +10,11 @@ h1 {
     margin-bottom:4px
 }
 h1,h2,h3 {padding-top:6px}
+.small_button {
+    height:20px;
+    width:90px;
+    margin:3px
+}
 /* misc */
 .clearer {clear:both}
 .left {float:left}

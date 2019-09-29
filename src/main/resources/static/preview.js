@@ -1,8 +1,15 @@
-stompClient.connect({}, function () {
-    stompClient.subscribe('/topic/files', function (text) {
-        prev(text.body);
+var PreviewClient = null;
+connectPreview();
+
+function connectPreview() {
+    var socket = new SockJS('/text-editor-websocket');
+    PreviewClient = Stomp.over(socket);
+    PreviewClient.connect({}, function () {
+        PreviewClient.subscribe('/topic/files', function (text) {
+            prev(text.body);
+        });
     });
-});
+}
 
 function prev(text) {
     var p = document.getElementById("preview");
@@ -16,7 +23,7 @@ fnames.forEach(function(fn){
     fn.addEventListener('mouseenter', function() {
         var filepath = document.getElementById("dirpath").innerHTML + "\\" + fn.innerHTML;
 
-        stompClient.send("/app/text", {}, filepath);
+        PreviewClient.send("/app/text", {}, filepath);
 
         prev.style.display = 'inline';
     });

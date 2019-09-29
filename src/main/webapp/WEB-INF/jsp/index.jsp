@@ -28,7 +28,10 @@
         </div>
         <div class="right">
             <div class="right_l">
-                <a href="download"><spring:message code="download"/></a> / <a href="/uploadForm"><spring:message code="upload_file"/></a>
+                <c:if test="${curFileIsDir != 'true'}">
+                    <a href="download"><spring:message code="download"/></a> /
+                </c:if>
+                <a href="/uploadForm"><spring:message code="upload_file"/></a>
             </div>
             <div class="right_r">
                 <span><spring:message code="lang.change"/></span>
@@ -207,7 +210,7 @@
 
                         <!--   TEXT EDITOR   --->
                         <c:choose>
-                            <c:when test="${canWrite=='false'}">
+                            <c:when test="${canWrite =='false' || supported == 'false' || curFileIsDir == 'true'}">
                                 <textarea id="editor" name="text" readonly>${text}</textarea>
                             </c:when>
                             <c:otherwise>

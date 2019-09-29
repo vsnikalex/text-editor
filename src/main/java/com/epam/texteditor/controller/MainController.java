@@ -51,9 +51,13 @@ public class MainController {
             model.addAttribute("text", "");
             model.addAttribute("curFileIsDir", true);
         } else {
-            String text = editorUtils.checkCompatibilityAndRead(curFile);
-            model.addAttribute("text", text);
+            String extension = editorUtils.extension(curFile.getName());
+            boolean supported = editorUtils.supported(extension);
+            String text = supported ? editorUtils.checkEncodingAndRead(curFile) :
+                    "FILE EXTENSION IS NOT SUPPORTED BY EDITOR";
 
+            model.addAttribute("text", text);
+            model.addAttribute("supported", supported);
             model.addAttribute("textNotes", noteService.getNotesByFileGroupByHeaderSortByDate(curFile));
         }
 

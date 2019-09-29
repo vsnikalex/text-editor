@@ -56,12 +56,12 @@ h1,h2,h3 {padding-top:6px}
 }
 .header .left .left_r {
     float: right;
-    width:300px;
+    width:200px;
     font-size: 0.7em;
 }
 .header .right .right_l {
     float: left;
-    width:280px;
+    width:380px;
     font-size: 0.7em;
 }
 .header .right .right_r {

@@ -28,7 +28,7 @@
         </div>
         <div class="right">
             <div class="right_l">
-                <a href="download"><spring:message code="download"/></a> / <a href="uploadForm.html"> <spring:message code="upload_file"/></a>
+                <a href="download"><spring:message code="download"/></a> / <a href="/uploadForm"><spring:message code="upload_file"/></a>
             </div>
             <div class="right_r">
                 <span><spring:message code="lang.change"/></span>
@@ -45,6 +45,7 @@
         <div id="container">
 
             <div id="left">
+                <!--   FILE NAVIGATION   --->
                 <div id="file_navigation">
                     <span>/${curDirName}
                         <c:if test="${readOnly=='true'}">
@@ -80,6 +81,7 @@
                 </div>
 
                 <div>
+                    <!--   DIRECTORY CREATION FORM   --->
                     <form action="/" method="GET">
                         <input name="dir_name" placeholder="<spring:message code="directory_name"/>..." />
                         <p><select multiple name="dir_access" style="height:20px;width:165px;margin:3px">
@@ -99,7 +101,7 @@
                 </div>
 
                 <div class="note_container">
-
+                    <!--   DIRECTORY NOTES   --->
                     <c:forEach items="${dirNotes}" var="entry">
 
                         <div id="dir_note">
@@ -119,6 +121,7 @@
 
             <div id="right">
                 <div>
+                    <!--   NOTE CREATION FORM   --->
                     <form class="note_form" action="/" method="POST">
                         <ul>
                             <c:if test="${curFileIsDir!='true'}">
@@ -155,13 +158,14 @@
                 </div>
                 <div class="note_container">
 
-                    <%--   HIDE/SHOW STORY   --%>
+                    <!--   HIDE/SHOW STORY   --->
                     <div class="form-group">
                         <label for="show_story"><spring:message code="storyline"/>: </label>
                         <button id="show_story" type="submit"><spring:message code="show"/></button>
                         <button id="hide_story" type="submit"><spring:message code="hide"/></button>
                     </div>
 
+                    <!--   TEXT NOTES   --->
                     <c:forEach items="${textNotes}" var="entry">
 
                         <div id="text_note">
@@ -182,6 +186,7 @@
             <div id="center">
                 <div class="navigation">
 
+                    <!--   FORMS ABOVE EDITOR   --->
                     <div id="delete">
                         <form action="/" method="GET">
                             <button style="height:25px;width:80px;margin:8px" type="submit" name="action" value="rm_file">
@@ -199,9 +204,8 @@
                         <button class="small_button" type="submit" name="action" value="new_file">
                             <spring:message code="new_file"/>
                         </button>
-                        <!--   DOWNLOAD FILE   --->
-                        <span id="dirpath" hidden><%=((File)session.getAttribute("curDir")).getAbsolutePath()%></span>
 
+                        <!--   TEXT EDITOR   --->
                         <c:choose>
                             <c:when test="${canWrite=='false'}">
                                 <textarea id="editor" name="text" readonly>${text}</textarea>
@@ -212,11 +216,12 @@
                         </c:choose>
                     </form>
 
-
                     <!--   FILE PREVIEWS   --->
+                    <span id="dirpath" hidden><%=((File)session.getAttribute("curDir")).getAbsolutePath()%></span>
                     <textarea id="preview" readonly hidden></textarea>
                     <script src="<c:url value="/preview.js"/>"></script>
 
+                    <!--   FILE PATH AT BOTTOM   --->
                     <span id="filepath"><%=((File)session.getAttribute("curFile")).getAbsolutePath()%></span>
                     <c:if test="${canWrite=='false'}">
                         <i>[<spring:message code="read_only"/>]</i>

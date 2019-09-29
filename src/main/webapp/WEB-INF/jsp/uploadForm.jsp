@@ -1,25 +1,26 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>File Upload</title>
+    <title><spring:message code="file_upload"/></title>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body style="background:#CCD8E0 url(img/bg.jpg) repeat-x left bottom;">
 
 <div class="form-container" style="
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     position: absolute;
     left: 50%;
-    margin-left: -200px;
+    margin-left: -250px;
     top: 50%;
-    margin-top: -200px;">
+    margin-top: -250px;">
 
-    <h1>File Upload</h1>
+    <h1><spring:message code="file_upload"/></h1>
     <form method="POST" enctype="multipart/form-data" action="/uploadForm" class="form-horizontal">
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="file">Upload a file</label>
+                <label class="col-md-3 control-lable" for="file"><spring:message code="upload_file"/></label>
                     <div class="col-md-7">
                         <input id = "file" type="file" name="file" class="form-control input-sm"/>
                         <input type="submit" value="Upload" />

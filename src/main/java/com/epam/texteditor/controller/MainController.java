@@ -51,7 +51,7 @@ public class MainController {
             model.addAttribute("text", "");
             model.addAttribute("curFileIsDir", true);
         } else {
-            String text = editorUtils.checkAndReadFile(curFile);
+            String text = editorUtils.checkCompatibilityAndRead(curFile);
             model.addAttribute("text", text);
 
             model.addAttribute("textNotes", noteService.getNotesByFileGroupByHeaderSortByDate(curFile));

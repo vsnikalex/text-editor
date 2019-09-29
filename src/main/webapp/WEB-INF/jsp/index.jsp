@@ -28,9 +28,7 @@
         </div>
         <div class="right">
             <div class="right_l">
-                <a href="<c:url value='uploadForm.html' />">
-                    <spring:message code="upload_file"/>
-                </a>
+                <a href="download"><spring:message code="download"/></a> / <a href="uploadForm.html"> <spring:message code="upload_file"/></a>
             </div>
             <div class="right_r">
                 <span><spring:message code="lang.change"/></span>
@@ -92,6 +90,7 @@
                             <spring:message code="new_directory"/>
                         </button>
                     </form>
+
                     <form action="/" method="GET">
                         <button style="width: 170px" type="submit" name="action" value="rm_dir">
                             <spring:message code="delete_directory"/>
@@ -201,9 +200,8 @@
                             <spring:message code="new_file"/>
                         </button>
                         <!--   DOWNLOAD FILE   --->
-                        <span id="curFile" hidden><%=((File)session.getAttribute("curFile")).getName()%></span>
                         <span id="dirpath" hidden><%=((File)session.getAttribute("curDir")).getAbsolutePath()%></span>
-                        <input type="button" class="small_button" id="dwn-btn" value="<spring:message code="download"/>"/>
+
                         <c:choose>
                             <c:when test="${canWrite=='false'}">
                                 <textarea id="editor" name="text" readonly>${text}</textarea>
@@ -212,8 +210,8 @@
                                 <textarea id="editor" name="text">${text}</textarea>
                             </c:otherwise>
                         </c:choose>
-                        <script src="<c:url value="/download.js"/>"></script>
                     </form>
+
 
                     <!--   FILE PREVIEWS   --->
                     <textarea id="preview" readonly hidden></textarea>

@@ -2,13 +2,15 @@ package com.epam.texteditor.controller;
 
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.mozilla.universalchardet.UniversalDetector;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -76,18 +78,18 @@ class EditorUtils {
         }
     }
 
-    String checkAndReadFile(File file) {
+    String checkCompatibilityAndRead(File file) {
         String extension = extension(file.getName());
 
         if (!supported(extension)) {
             return "FILE EXTENSION IS NOT SUPPORTED BY EDITOR";
         }
 
-        return readFile(file);
+        return checkEncodingAndRead(file);
     }
 
     @SneakyThrows(IOException.class)
-    String readFile(File file) {
+    String checkEncodingAndRead(File file) {
         // Read considering encoding
         String encoding = this.getFileEncoding(file);
         if (encoding == null) {

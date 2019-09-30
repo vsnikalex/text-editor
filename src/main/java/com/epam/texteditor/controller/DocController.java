@@ -27,7 +27,7 @@ public class DocController {
         this.editorUtils = editorUtils;
     }
 
-    // For editor
+    // Editor
     @MessageMapping("/text/{fileHash}")
     @SendTo("/topic/files/{fileHash}")
     public Doc doc(Doc doc, @DestinationVariable String fileHash) {
@@ -37,17 +37,24 @@ public class DocController {
         return doc;
     }
 
-    // For previews
+    // Previews
     @MessageMapping("/text")
     @SendTo("/topic/files")
     public String text(String filePath) {
         return editorUtils.checkCompatibilityAndRead(new File(filePath));
     }
 
+    // Download
     @SneakyThrows(IOException.class)
     @GetMapping(value = "/download")
     public void getFile(HttpSession session, HttpServletResponse response) {
         File curFile = (File)session.getAttribute("curFile");
+
+        if (!curFile.exists()) {
+            response.sendRedirect("/");
+            return;
+        }
+
         String filePath = curFile.getAbsolutePath();
 
         InputStream in = new FileInputStream(filePath);

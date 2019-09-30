@@ -140,7 +140,10 @@ public class MainController {
                     }
                     break;
                 case "open_file":
-                    session.setAttribute("curFile", new File(curDir, fileName));
+                    File fileToOpen = new File(curDir, fileName);
+                    if (fileToOpen.exists()) {
+                        session.setAttribute("curFile", fileToOpen);
+                    }
                     break;
                 case "rm_file":
                     if (removeDirOrFile(curFile)) {
@@ -157,10 +160,15 @@ public class MainController {
                     }
                     break;
                 case "open_dir":
-                    session.setAttribute("curDir", new File(curDir, dirName));
+                    File dirToOpen = new File(curDir, dirName);
+                    if (dirToOpen.exists()) {
+                        session.setAttribute("curDir", dirToOpen);
+                    }
                     break;
                 case "go_back":
-                    session.setAttribute("curDir", curDir.getParentFile());
+                    if (!curFile.equals(root)) {
+                        session.setAttribute("curDir", curDir.getParentFile());
+                    }
                     break;
                 case "rm_dir":
                     if (removeDirOrFile(curDir)) {
